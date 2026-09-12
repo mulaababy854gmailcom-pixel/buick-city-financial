@@ -1,4 +1,5 @@
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck, Building2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -12,7 +13,7 @@ function Home() {
           <div>
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-4 py-2 text-xs font-medium tracking-wide text-sky-200">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              Private commercial capital
+              Private Commercial B2B Lender
             </div>
 
             <h1 className="max-w-4xl text-5xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
@@ -21,30 +22,26 @@ function Home() {
             </h1>
 
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
-              Buick City Financial Corporation provides thoughtful commercial
-              financing and structured capital solutions for qualified
-              businesses, projects, and partners.
+              Buick City Financial Corporation is a private B2B commercial lender offering structured debt, bridge financing, and joint venture capital solutions built exclusively for corporate entities, developers, and real estate sponsors.
             </p>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <a
-                href="/submit-deal"
+              <Link
+                to="/submit-deal"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-sky-300 px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-sky-200"
               >
                 Submit a deal <ArrowRight className="h-4 w-4" />
-              </a>
-              <a
-                href="/products"
+              </Link>
+              <Link
+                to="/products"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3.5 font-semibold text-white transition hover:border-sky-300/60 hover:bg-white/5"
               >
                 Explore solutions
-              </a>
+              </Link>
             </div>
 
             <p className="mt-8 text-xs leading-5 text-slate-500">
-              Financing is subject to underwriting, eligibility, documentation,
-              and applicable law. No financing or investment opportunity is
-              guaranteed.
+              Commercial B2B loans only. Subject to underwriting, corporate eligibility, documentation, and applicable law. No consumer residential mortgages offered.
             </p>
           </div>
 
@@ -56,9 +53,9 @@ function Home() {
 
             <div className="space-y-7">
               {[
-                ["01", "Understand the opportunity", "We begin with context, goals, and the fundamentals."],
-                ["02", "Structure with discipline", "We evaluate risk, alignment, and practical execution."],
-                ["03", "Build for the long term", "We prioritize clear communication and durable relationships."],
+                ["01", "Understand the opportunity", "We begin with corporate context, deal specs, and market fundamentals."],
+                ["02", "Structure with discipline", "We evaluate LTV, risk alignment, and capital stack flexibility."],
+                ["03", "Build for the long term", "We prioritize clear execution, sponsor support, and durable relationships."],
               ].map(([number, title, text]) => (
                 <div key={number} className="flex gap-4">
                   <span className="text-sm font-semibold text-sky-300">{number}</span>
@@ -81,20 +78,16 @@ function Home() {
               Built around clarity
             </p>
             <h2 className="mt-4 max-w-xl text-4xl font-semibold tracking-tight text-white">
-              A practical partner for complex capital needs.
+              A private B2B financing partner for active commercial developers.
             </h2>
           </div>
 
           <div className="space-y-5 text-base leading-8 text-slate-300">
             <p>
-              We work across commercial financing, structured capital, and
-              asset-backed opportunities with an emphasis on transparent
-              evaluation and responsible execution.
+              We provide commercial-purpose debt, mezzanine structures, and equity co-investment solutions with an emphasis on transparent evaluation and rapid execution.
             </p>
             <p>
-              Every situation is different. Our role is to understand the
-              details, identify the constraints, and help create a capital
-              path that fits the opportunity.
+              Whether you are funding a high-yield flip, a ground-up development, or structuring complex capital with third-party grants and LP equity, we build a path tailored to your project setup.
             </p>
           </div>
         </div>

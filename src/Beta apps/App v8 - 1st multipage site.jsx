@@ -8,8 +8,6 @@ import InvestPage from "./pages/InvestPage";
 import JointVenturesPage from "./pages/JointVenturesPage";
 import ProductsPage from "./pages/ProductsPage";
 import SubmitDealPage from "./pages/SubmitDealPage";
-import AuthPage from "./pages/AuthPage";
-import InvestorDashboard from "./pages/InvestorDashboard";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -48,9 +46,6 @@ function App() {
             <Link className="text-sm text-slate-300 transition hover:text-white" to="/invest">
               Invest
             </Link>
-            <Link className="text-sm font-semibold text-sky-300 transition hover:text-white" to="/portal">
-              LP Portal
-            </Link>
             <Link
               to="/submit-deal"
               className="rounded-full bg-sky-300 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-sky-200"
@@ -84,9 +79,6 @@ function App() {
             <Link to="/invest" onClick={closeMenu} className="text-slate-200">
               Invest
             </Link>
-            <Link to="/portal" onClick={closeMenu} className="font-semibold text-sky-300">
-              LP Portal
-            </Link>
             <Link
               to="/submit-deal"
               onClick={closeMenu}
@@ -106,8 +98,6 @@ function App() {
           <Route path="/joint-ventures" element={<JointVenturesPage />} />
           <Route path="/invest" element={<InvestPage />} />
           <Route path="/submit-deal" element={<SubmitDealPage />} />
-          <Route path="/portal" element={<AuthPage />} />
-          <Route path="/investor-dashboard" element={<InvestorDashboard />} />
         </Routes>
       </main>
 
