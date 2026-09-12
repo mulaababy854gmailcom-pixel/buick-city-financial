@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Building2, Clock, CheckCircle2, AlertTriangle, XCircle, PlusCircle } from 'lucide-react';
+import { Building2, Clock, CheckCircle2, AlertTriangle, XCircle, PlusCircle, ArrowRight } from 'lucide-react';
 
 export default function ClientPortal() {
   const location = useLocation();
@@ -21,10 +21,10 @@ export default function ClientPortal() {
       setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
 
-      // Query loan applications from Supabase ordered by latest first
+      // Query loan applications from Supabase
       let query = supabase.from('loan_applications').select('*').order('created_at', { ascending: false });
       
-      // Filter by user_id if authenticated
+      // If user is authenticated, filter by user_id. If anonymous demo, fetch all recent or local storage items.
       if (user?.id) {
         query = query.eq('user_id', user.id);
       }
@@ -89,12 +89,12 @@ export default function ClientPortal() {
           </button>
         </div>
 
-        {/* Recent Submission Alert Box */}
+        {/* Recent Submission Alert Box (if coming straight from Deal Wizard) */}
         {recentDecision && (
           <div className="rounded-2xl border border-sky-300/30 bg-gradient-to-r from-sky-950/50 to-slate-900 p-6 shadow-xl">
             <h3 className="text-lg font-semibold text-white mb-1">Latest Evaluation Notification</h3>
             <p className="text-sm text-sky-200 font-medium mb-2">{recentDecision.status}: {recentDecision.reason}</p>
-            <p className="text-xs text-slate-400">Your file has been successfully logged in the secure institutional ledger below.</p>
+            <p className="text-xs text-slate-400">Your file has been logged in the secure institutional ledger below.</p>
           </div>
         )}
 

@@ -2,7 +2,7 @@ import { Building2, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-// Page Imports
+// Page & Component Imports
 import Home from "./pages/Home";
 import InvestPage from "./pages/InvestPage";
 import JointVenturesPage from "./pages/JointVenturesPage";
@@ -10,6 +10,7 @@ import ProductsPage from "./pages/ProductsPage";
 import SubmitDealPage from "./pages/SubmitDealPage";
 import AuthPage from "./pages/AuthPage";
 import InvestorDashboard from "./pages/InvestorDashboard";
+import ClientPortal from "./components/ClientPortal";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -106,7 +107,8 @@ function App() {
           <Route path="/joint-ventures" element={<JointVenturesPage />} />
           <Route path="/invest" element={<InvestPage />} />
           <Route path="/submit-deal" element={<SubmitDealPage />} />
-          <Route path="/portal" element={<AuthPage />} />
+          <Route path="/portal" element={<ClientPortal />} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route path="/investor-dashboard" element={<InvestorDashboard />} />
         </Routes>
       </main>
