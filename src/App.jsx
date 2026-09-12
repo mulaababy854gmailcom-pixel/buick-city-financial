@@ -49,7 +49,7 @@ function App() {
               Invest
             </Link>
             <Link className="text-sm font-semibold text-sky-300 transition hover:text-white" to="/portal">
-              LP Portal
+              Client Portal
             </Link>
             <Link
               to="/submit-deal"
@@ -85,7 +85,7 @@ function App() {
               Invest
             </Link>
             <Link to="/portal" onClick={closeMenu} className="font-semibold text-sky-300">
-              LP Portal
+              Client Portal
             </Link>
             <Link
               to="/submit-deal"
