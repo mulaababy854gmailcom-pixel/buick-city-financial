@@ -12,8 +12,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import DealWizard from "./components/DealWizard";
-import Invest from "./components/Invest";
-import LoanProducts from "./components/LoanProducts";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -58,14 +56,8 @@ function App() {
             <a className="text-sm text-slate-300 transition hover:text-white" href="#capital">
               Capital Solutions
             </a>
-            <a className="text-sm text-slate-300 transition hover:text-white" href="#products">
-              Products
-            </a>
             <a className="text-sm text-slate-300 transition hover:text-white" href="#calculator">
               Calculator
-            </a>
-            <a className="text-sm text-slate-300 transition hover:text-white" href="#invest">
-              Invest
             </a>
             <a className="text-sm text-slate-300 transition hover:text-white" href="#submit-deal">
               Submit a Deal
@@ -96,9 +88,7 @@ function App() {
               {[
                 ["About", "#about"],
                 ["Capital Solutions", "#capital"],
-                ["Products", "#products"],
                 ["Calculator", "#calculator"],
-                ["Invest", "#invest"],
                 ["Submit a Deal", "#submit-deal"],
                 ["Contact", "#contact"],
               ].map(([label, href]) => (
@@ -321,16 +311,6 @@ function App() {
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Invest Section */}
-        <section id="invest" className="border-b border-white/10 bg-[#07111f]">
-          <Invest />
-        </section>
-
-        {/* Loan Products Section */}
-        <section id="products" className="border-b border-white/10 bg-[#07111f]">
-          <LoanProducts />
         </section>
 
         {/* Deal Intake Wizard Section */}

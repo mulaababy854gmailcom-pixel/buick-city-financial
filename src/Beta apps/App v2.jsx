@@ -4,16 +4,12 @@ import {
   Calculator,
   CheckCircle2,
   ChevronRight,
-  FileText,
   Menu,
   ShieldCheck,
   TrendingUp,
   X,
 } from "lucide-react";
 import { useState } from "react";
-import DealWizard from "./components/DealWizard";
-import Invest from "./components/Invest";
-import LoanProducts from "./components/LoanProducts";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -58,26 +54,17 @@ function App() {
             <a className="text-sm text-slate-300 transition hover:text-white" href="#capital">
               Capital Solutions
             </a>
-            <a className="text-sm text-slate-300 transition hover:text-white" href="#products">
-              Products
-            </a>
             <a className="text-sm text-slate-300 transition hover:text-white" href="#calculator">
               Calculator
-            </a>
-            <a className="text-sm text-slate-300 transition hover:text-white" href="#invest">
-              Invest
-            </a>
-            <a className="text-sm text-slate-300 transition hover:text-white" href="#submit-deal">
-              Submit a Deal
             </a>
             <a className="text-sm text-slate-300 transition hover:text-white" href="#contact">
               Contact
             </a>
             <a
-              href="#submit-deal"
+              href="#contact"
               className="rounded-full bg-sky-300 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-sky-200"
             >
-              Submit Project
+              Start a conversation
             </a>
           </nav>
 
@@ -96,10 +83,7 @@ function App() {
               {[
                 ["About", "#about"],
                 ["Capital Solutions", "#capital"],
-                ["Products", "#products"],
                 ["Calculator", "#calculator"],
-                ["Invest", "#invest"],
-                ["Submit a Deal", "#submit-deal"],
                 ["Contact", "#contact"],
               ].map(([label, href]) => (
                 <a key={href} href={href} onClick={closeMenu} className="text-slate-200">
@@ -107,11 +91,11 @@ function App() {
                 </a>
               ))}
               <a
-                href="#submit-deal"
+                href="#contact"
                 onClick={closeMenu}
                 className="rounded-full bg-sky-300 px-5 py-3 text-center font-semibold text-slate-950"
               >
-                Submit Project
+                Start a conversation
               </a>
             </div>
           </nav>
@@ -144,10 +128,10 @@ function App() {
 
               <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                 <a
-                  href="#submit-deal"
+                  href="#contact"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-sky-300 px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-sky-200"
                 >
-                  Submit a deal <ArrowRight className="h-4 w-4" />
+                  Discuss your capital needs <ArrowRight className="h-4 w-4" />
                 </a>
                 <a
                   href="#capital"
@@ -256,7 +240,7 @@ function App() {
                 <Icon className="h-7 w-7 text-sky-300" />
                 <h3 className="mt-8 text-xl font-semibold text-white">{title}</h3>
                 <p className="mt-4 leading-7 text-slate-400">{text}</p>
-                <a href="#submit-deal" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-sky-300">
+                <a href="#contact" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-sky-300">
                   Learn more <ChevronRight className="h-4 w-4" />
                 </a>
               </div>
@@ -320,38 +304,6 @@ function App() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Invest Section */}
-        <section id="invest" className="border-b border-white/10 bg-[#07111f]">
-          <Invest />
-        </section>
-
-        {/* Loan Products Section */}
-        <section id="products" className="border-b border-white/10 bg-[#07111f]">
-          <LoanProducts />
-        </section>
-
-        {/* Deal Intake Wizard Section */}
-        <section id="submit-deal" className="border-b border-white/10 bg-[#07111f] py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl text-center mb-12">
-              <div className="inline-flex items-center gap-2 text-sky-300 mb-3">
-                <FileText className="h-5 w-5" />
-                <span className="text-sm font-semibold uppercase tracking-[0.2em]">
-                  Intake & Underwriting
-                </span>
-              </div>
-              <h2 className="text-4xl font-semibold tracking-tight text-white">
-                Submit Your Deal Specs
-              </h2>
-              <p className="mt-4 text-slate-400 leading-relaxed">
-                Provide your project address, financial requirements, and contact information to begin an initial underwriting evaluation.
-              </p>
-            </div>
-
-            <DealWizard />
           </div>
         </section>
 
