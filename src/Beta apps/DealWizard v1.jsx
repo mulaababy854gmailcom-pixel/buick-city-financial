@@ -28,7 +28,6 @@ export default function DealWizard() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState(INITIAL_DATA);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Update input state
   const handleChange = (e) => {
@@ -46,38 +45,12 @@ export default function DealWizard() {
     if (currentStep > 1) setCurrentStep((prev) => prev - 1);
   };
 
-  // Form Submission via Web3Forms API
-  const handleSubmit = async (e) => {
+  // Form Submission
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    const payload = new FormData();
-    payload.append("access_key", "1bbcb91a-bf1b-436d-819a-f408ec0f5a6f");
-    payload.append("subject", `New Deal Submission: ${formData.propertyName || 'New Property'}`);
-
-    // Map form state keys to the payload
-    Object.keys(formData).forEach((key) => {
-      payload.append(key, formData[key]);
-    });
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: payload,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setIsSubmitted(true);
-      } else {
-        alert("There was an issue submitting your deal. Please check your entries and try again.");
-      }
-    } catch (error) {
-      alert("Network error. Please check your connection and try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    console.log('Submitted Deal Request:', formData);
+    // TODO: Send formData to your backend API, Supabase, or email service
+    setIsSubmitted(true);
   };
 
   if (isSubmitted) {
@@ -344,8 +317,7 @@ export default function DealWizard() {
             <button
               type="button"
               onClick={handleBack}
-              disabled={isSubmitting}
-              className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium rounded-lg transition disabled:opacity-50"
+              className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium rounded-lg transition"
             >
               Back
             </button>
@@ -353,12 +325,9 @@ export default function DealWizard() {
 
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-lg transition shadow-lg shadow-blue-600/30 disabled:opacity-50"
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-lg transition shadow-lg shadow-blue-600/30"
           >
-            {currentStep === 3 
-              ? (isSubmitting ? 'Submitting...' : 'Submit Deal Overview') 
-              : 'Continue'}
+            {currentStep === 3 ? 'Submit Deal Overview' : 'Continue'}
           </button>
         </div>
       </form>

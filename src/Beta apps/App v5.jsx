@@ -1,6 +1,7 @@
 import {
   ArrowRight,
   Building2,
+  Calculator,
   CheckCircle2,
   ChevronRight,
   FileText,
@@ -16,6 +17,18 @@ import LoanProducts from "./components/LoanProducts";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [capital, setCapital] = useState("250000");
+
+  const investedCapital = Number(capital) || 0;
+  const annualIllustration = investedCapital * 0.08;
+  const monthlyIllustration = annualIllustration / 12;
+
+  const money = (amount) =>
+    new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    }).format(amount);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -47,6 +60,9 @@ function App() {
             </a>
             <a className="text-sm text-slate-300 transition hover:text-white" href="#products">
               Products
+            </a>
+            <a className="text-sm text-slate-300 transition hover:text-white" href="#calculator">
+              Calculator
             </a>
             <a className="text-sm text-slate-300 transition hover:text-white" href="#invest">
               Invest
@@ -81,6 +97,7 @@ function App() {
                 ["About", "#about"],
                 ["Capital Solutions", "#capital"],
                 ["Products", "#products"],
+                ["Calculator", "#calculator"],
                 ["Invest", "#invest"],
                 ["Submit a Deal", "#submit-deal"],
                 ["Contact", "#contact"],
@@ -247,6 +264,65 @@ function App() {
           </div>
         </section>
 
+        {/* Calculator */}
+        <section id="calculator" className="border-y border-white/10 bg-[#0a1728]">
+          <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-2 lg:px-8 lg:items-center">
+            <div>
+              <div className="flex items-center gap-3 text-sky-300">
+                <Calculator className="h-6 w-6" />
+                <span className="text-sm font-semibold uppercase tracking-[0.2em]">
+                  Planning illustration
+                </span>
+              </div>
+              <h2 className="mt-5 text-4xl font-semibold tracking-tight text-white">
+                See an illustrative annual and monthly calculation.
+              </h2>
+              <p className="mt-5 max-w-xl leading-7 text-slate-400">
+                Adjust the amount below to view a simple mathematical illustration
+                using an 8.00% target annual rate.
+              </p>
+              <p className="mt-6 text-xs leading-5 text-slate-500">
+                This is an illustrative calculation only. It is not an offer,
+                solicitation, promise, guarantee, or projection of investment
+                performance. Actual terms, eligibility, distributions, and
+                outcomes may differ.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-[#07111f] p-7 sm:p-9">
+              <label className="text-sm font-medium text-slate-300" htmlFor="capital">
+                Illustrative capital amount
+              </label>
+              <div className="mt-3 flex items-center rounded-xl border border-white/15 bg-white/[0.04] px-4">
+                <span className="text-slate-500">$</span>
+                <input
+                  id="capital"
+                  type="number"
+                  min="0"
+                  value={capital}
+                  onChange={(event) => setCapital(event.target.value)}
+                  className="w-full bg-transparent px-3 py-4 text-xl text-white outline-none"
+                />
+              </div>
+
+              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl bg-white/[0.06] p-5">
+                  <p className="text-sm text-slate-400">Illustrative annual amount</p>
+                  <p className="mt-2 text-2xl font-semibold text-white">
+                    {money(annualIllustration)}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-sky-300/10 p-5">
+                  <p className="text-sm text-sky-200">Illustrative monthly amount</p>
+                  <p className="mt-2 text-2xl font-semibold text-sky-200">
+                    {money(monthlyIllustration)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Invest Section */}
         <section id="invest" className="border-b border-white/10 bg-[#07111f]">
           <Invest />
@@ -307,58 +383,17 @@ function App() {
               </div>
 
               <form
-                onSubmit={async (event) => {
+                onSubmit={(event) => {
                   event.preventDefault();
-                  const formData = new FormData(event.target);
-                  formData.append("access_key", "1bbcb91a-bf1b-436d-819a-f408ec0f5a6f");
-
-                  try {
-                    const response = await fetch("https://api.web3forms.com/submit", {
-                      method: "POST",
-                      body: formData,
-                    });
-
-                    const data = await response.json();
-                    if (data.success) {
-                      alert("Thank you! Your inquiry has been sent successfully.");
-                      event.target.reset();
-                    } else {
-                      alert("Submission failed. Please try again.");
-                    }
-                  } catch (error) {
-                    alert("An error occurred. Please try again later.");
-                  }
+                  alert("Thank you. Your inquiry has been recorded for this demo.");
                 }}
                 className="grid gap-4"
               >
-                <input
-                  name="name"
-                  className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300"
-                  placeholder="Name"
-                  required
-                />
-                <input
-                  name="email"
-                  className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300"
-                  type="email"
-                  placeholder="Email address"
-                  required
-                />
-                <input
-                  name="company"
-                  className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300"
-                  placeholder="Company or entity"
-                />
-                <textarea
-                  name="message"
-                  className="min-h-32 rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300"
-                  placeholder="Tell us briefly about your capital needs"
-                  required
-                />
-                <button
-                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-sky-300 px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-sky-200"
-                  type="submit"
-                >
+                <input className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300" placeholder="Name" required />
+                <input className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300" type="email" placeholder="Email address" required />
+                <input className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300" placeholder="Company or entity" />
+                <textarea className="min-h-32 rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300" placeholder="Tell us briefly about your capital needs" />
+                <button className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-sky-300 px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-sky-200" type="submit">
                   Submit inquiry <ArrowRight className="h-4 w-4" />
                 </button>
               </form>

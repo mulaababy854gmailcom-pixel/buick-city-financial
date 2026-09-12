@@ -307,58 +307,17 @@ function App() {
               </div>
 
               <form
-                onSubmit={async (event) => {
+                onSubmit={(event) => {
                   event.preventDefault();
-                  const formData = new FormData(event.target);
-                  formData.append("access_key", "1bbcb91a-bf1b-436d-819a-f408ec0f5a6f");
-
-                  try {
-                    const response = await fetch("https://api.web3forms.com/submit", {
-                      method: "POST",
-                      body: formData,
-                    });
-
-                    const data = await response.json();
-                    if (data.success) {
-                      alert("Thank you! Your inquiry has been sent successfully.");
-                      event.target.reset();
-                    } else {
-                      alert("Submission failed. Please try again.");
-                    }
-                  } catch (error) {
-                    alert("An error occurred. Please try again later.");
-                  }
+                  alert("Thank you. Your inquiry has been recorded for this demo.");
                 }}
                 className="grid gap-4"
               >
-                <input
-                  name="name"
-                  className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300"
-                  placeholder="Name"
-                  required
-                />
-                <input
-                  name="email"
-                  className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300"
-                  type="email"
-                  placeholder="Email address"
-                  required
-                />
-                <input
-                  name="company"
-                  className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300"
-                  placeholder="Company or entity"
-                />
-                <textarea
-                  name="message"
-                  className="min-h-32 rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300"
-                  placeholder="Tell us briefly about your capital needs"
-                  required
-                />
-                <button
-                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-sky-300 px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-sky-200"
-                  type="submit"
-                >
+                <input className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300" placeholder="Name" required />
+                <input className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300" type="email" placeholder="Email address" required />
+                <input className="rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300" placeholder="Company or entity" />
+                <textarea className="min-h-32 rounded-xl border border-white/15 bg-[#07111f]/80 px-4 py-3.5 text-white outline-none placeholder:text-slate-500 focus:border-sky-300" placeholder="Tell us briefly about your capital needs" />
+                <button className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-sky-300 px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-sky-200" type="submit">
                   Submit inquiry <ArrowRight className="h-4 w-4" />
                 </button>
               </form>
