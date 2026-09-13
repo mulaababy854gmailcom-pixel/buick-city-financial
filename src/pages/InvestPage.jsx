@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Calculator, ArrowRight, Landmark, RefreshCw, DollarSign, Clock, HelpCircle, Lock, X, MapPin, UserPlus, CheckCircle2, TrendingUp, BarChart3, Layers } from 'lucide-react';
+import { Shield, Calculator, ArrowRight, Landmark, RefreshCw, DollarSign, Clock, HelpCircle, Lock, MapPin, CheckCircle2, TrendingUp, BarChart3, Layers, UserCheck } from 'lucide-react';
 
 // Dynamic Yield Matrix mapping based on selected LockTerm year
 const getTieredYield = (year) => {
@@ -20,15 +20,11 @@ export default function Invest() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [locationStatus, setLocationStatus] = useState('checking'); // 'checking', 'verified'
-  const [showInquiryModal, setShowInquiryModal] = useState(false);
-  const [inquirySubmitted, setInquirySubmitted] = useState(false);
-  const [inquiryData, setInquiryData] = useState({ name: '', email: '', phone: '', message: '' });
 
   // Calculator State
   const [allocation, setAllocation] = useState(25000);
   const [lockTerm, setLockTerm] = useState(5); // 1, 3, 5, 7, or 10 years
   const [payoutMethod, setPayoutMethod] = useState('monthly'); // 'monthly' or 'reinvest'
-  const [showROFRModal, setShowROFRModal] = useState(false);
 
   // Simulate Geofencing & Location Check on Mount
   React.useEffect(() => {
@@ -49,24 +45,6 @@ export default function Invest() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     sessionStorage.removeItem('bcf_investor_auth');
-  };
-
-  const handleInquirySubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('/api/investor-inquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(inquiryData)
-      });
-      const data = await response.json();
-      if (data.success || true) {
-        setInquirySubmitted(true);
-      }
-    } catch (error) {
-      console.error('Inquiry submission fallback:', error);
-      setInquirySubmitted(true);
-    }
   };
 
   // Dynamic Tiered Yield Calculation Engine
@@ -137,116 +115,13 @@ export default function Invest() {
             </button>
           </form>
 
-          <div className="border-t border-slate-800 pt-4 text-center space-y-2">
-            <p className="text-xs text-slate-500">Don't have an active manual profile yet?</p>
-            <button
-              type="button"
-              onClick={() => setShowInquiryModal(true)}
-              className="w-full bg-[#060b13] hover:bg-slate-800 border border-slate-700 text-sky-400 font-semibold py-3 px-4 rounded-xl transition-all text-xs flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <UserPlus className="w-4 h-4" /> Inquire for Manual Profile Onboarding
-            </button>
+          <div className="border-t border-slate-800 pt-4 text-center">
+            <p className="text-xs text-slate-500 flex items-center justify-center gap-1.5">
+              <UserCheck className="w-3.5 h-3.5 text-sky-400" /> Protected by BCF Institutional Security Protocols
+            </p>
           </div>
 
         </div>
-
-        {/* INQUIRY MODAL */}
-        {showInquiryModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-8 max-w-lg w-full relative shadow-2xl">
-              <button 
-                onClick={() => { setShowInquiryModal(false); setInquirySubmitted(false); }}
-                className="absolute top-6 right-6 text-slate-400 hover:text-white"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              {!inquirySubmitted ? (
-                <div className="space-y-6">
-                  <div className="space-y-1">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-500/20 bg-sky-500/5 text-sky-400 text-xs font-medium uppercase tracking-wider mb-2">
-                      <UserPlus className="w-3 h-3" /> Investor Relations
-                    </div>
-                    <h3 className="text-xl font-bold text-white">Request Manual Profile Setup</h3>
-                    <p className="text-xs text-slate-400">
-                      Submit your contact details and allocation parameters. Our compliance officers will review your submission and manually provision your portal credentials.
-                    </p>
-                  </div>
-
-                  <form onSubmit={handleInquirySubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Full Legal Name</label>
-                      <input 
-                        type="text" 
-                        required 
-                        value={inquiryData.name}
-                        onChange={(e) => setInquiryData({...inquiryData, name: e.target.value})}
-                        placeholder="Darius D. Thomas"
-                        className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-sky-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
-                      <input 
-                        type="email" 
-                        required 
-                        value={inquiryData.email}
-                        onChange={(e) => setInquiryData({...inquiryData, email: e.target.value})}
-                        placeholder="investor@domain.com"
-                        className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-sky-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Phone Number</label>
-                      <input 
-                        type="tel" 
-                        required 
-                        value={inquiryData.phone}
-                        onChange={(e) => setInquiryData({...inquiryData, phone: e.target.value})}
-                        placeholder="(810) 000-0000"
-                        className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-sky-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Intended Capital Allocation / Notes</label>
-                      <textarea 
-                        rows="3"
-                        value={inquiryData.message}
-                        onChange={(e) => setInquiryData({...inquiryData, message: e.target.value})}
-                        placeholder="Describe your target allocation amount and lock-in horizon preference..."
-                        className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-sky-500 resize-none"
-                      />
-                    </div>
-                    <button 
-                      type="submit"
-                      className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-3 rounded-xl transition-all text-xs shadow-lg shadow-sky-500/10 cursor-pointer"
-                    >
-                      Submit Inquiry For Manual Provisioning
-                    </button>
-                  </form>
-                </div>
-              ) : (
-                <div className="text-center py-8 space-y-4">
-                  <div className="h-16 w-16 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center text-emerald-400 mx-auto">
-                    <CheckCircle2 className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Inquiry Received Successfully</h3>
-                  <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
-                    Thank you, <strong className="text-slate-200">{inquiryData.name}</strong>. Your profile inquiry has been logged securely. Our underwriting team will verify your details and issue your login credentials shortly.
-                  </p>
-                  <button 
-                    onClick={() => { setShowInquiryModal(false); setInquirySubmitted(false); }}
-                    className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 px-6 rounded-xl transition-colors text-xs"
-                  >
-                    Return to Login Gate
-                  </button>
-                </div>
-              )}
-
-            </div>
-          </div>
-        )}
-
       </div>
     );
   }
@@ -460,13 +335,6 @@ export default function Invest() {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="text-base font-bold text-white">Discretionary Liquidity Restriction</h3>
-                  <button 
-                    type="button" 
-                    onClick={() => setShowROFRModal(true)}
-                    className="text-slate-500 hover:text-sky-400 transition-colors cursor-pointer"
-                  >
-                    <HelpCircle className="w-4 h-4" />
-                  </button>
                 </div>
                 <p className="text-sm text-slate-400 leading-relaxed mb-4">
                   Co-investment units are illiquid asset allocations locked for the selected term horizon. Early redemption requests are subject to GP approval and Right of First Refusal (ROFR) provisions.

@@ -119,7 +119,7 @@ function App() {
           <Route path="/joint-ventures" element={<JointVenturesPage />} />
           <Route 
             path="/invest" 
-            element={<InvestPage onApplyForProduct={handleApplyForProduct} />} 
+            element={<InvestPage />} 
           />
           <Route path="/submit-deal" element={<SubmitDealPage />} />
           <Route path="/portal" element={<ClientPortal />} />
