@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
-import { Shield, Lock, ArrowRight, CheckCircle, Calculator, Building2, UserCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Shield, Lock, ArrowRight, Calculator, Building2, UserCheck } from 'lucide-react';
 
-export default function InvestPage({ onLoginClick, onNavigate }) {
+export default function InvestPage({ onLoginClick }) {
+  const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    setIsLoggedIn(true);
-    setShowLoginModal(false);
-    if (onLoginClick) onLoginClick({ email: loginEmail });
+    if (onLoginClick) {
+      onLoginClick({ email: loginEmail });
+    }
+    // Directly navigate to the investor dashboard page route
+    navigate('/investor-dashboard');
   };
 
   return (
     <div className="min-h-screen bg-[#040910] text-slate-100 font-sans pb-20">
-      {/* Secondary Sub-Navbar matching your exact screenshot */}
+      {/* Secondary Sub-Navbar */}
       <div className="border-b border-white/10 bg-[#07111f]/60 backdrop-blur-md sticky top-0 z-30">
         <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -30,9 +33,9 @@ export default function InvestPage({ onLoginClick, onNavigate }) {
           </div>
 
           <div className="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-300">
-            <button onClick={() => onNavigate && onNavigate('yield')} className="hover:text-sky-300 transition cursor-pointer">Yield Matrix</button>
-            <button onClick={() => onNavigate && onNavigate('covenants')} className="hover:text-sky-300 transition cursor-pointer">Protective Covenants</button>
-            <button onClick={() => onNavigate && onNavigate('faq')} className="hover:text-sky-300 transition cursor-pointer">Partnership FAQ</button>
+            <button onClick={() => navigate('/yield-matrix')} className="hover:text-sky-300 transition cursor-pointer">Yield Matrix</button>
+            <button onClick={() => navigate('/covenants')} className="hover:text-sky-300 transition cursor-pointer">Protective Covenants</button>
+            <button onClick={() => navigate('/faq')} className="hover:text-sky-300 transition cursor-pointer">Partnership FAQ</button>
           </div>
 
           <div>
@@ -47,7 +50,7 @@ export default function InvestPage({ onLoginClick, onNavigate }) {
         </div>
       </div>
 
-      {/* Hero Section with exact styling and gradient text */}
+      {/* Hero Section */}
       <div className="mx-auto max-w-6xl px-6 pt-16 pb-12 text-center space-y-6">
         <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-4 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-sky-300 uppercase">
           <Shield className="h-3.5 w-3.5 text-sky-400" /> Private Placement Limited Partnership Gate
