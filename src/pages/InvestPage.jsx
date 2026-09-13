@@ -1,375 +1,372 @@
 import React, { useState } from 'react';
-import { Lock, LogOut, ShieldCheck, TrendingUp, DollarSign, FileText, CheckCircle2 } from 'lucide-react';
+import { Shield, Calculator, ArrowRight, Landmark, Percent, RefreshCw, DollarSign, Clock, HelpCircle, Lock, X, CheckCircle, ChevronRight, Layers } from 'lucide-react';
 
-export default function InvestPage({ onApplyForProduct }) {
-  // Institutional session persistence via browser session storage
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return sessionStorage.getItem('bcf_investor_auth') === 'true';
-  });
+// Institutional Tiered Yield Matrix Mapping
+const getTieredYield = (year) => {
+  if (year === 1) return 0.0600;  // 6.00%
+  if (year === 3) return 0.0750;  // 7.50%
+  if (year === 5) return 0.0850;  // 8.50%
+  if (year === 7) return 0.0925;  // 9.25%
+  if (year === 10) return 0.1000; // 10.00%
+  return 0.0800; // Fallback
+};
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [targetCapital, setTargetCapital] = useState(25000);
-  const [selectedLockTerm, setSelectedLockTerm] = useState('36'); // '12', '36', '60'
-  const [distributionMode, setDistributionMode] = useState('compound'); // 'compound' or 'payout'
-  const [submitted, setSubmitted] = useState(false);
+export default function Invest({ onNavigateToPortal }) {
+  const [allocation, setAllocation] = useState(25000);
+  const [lockTerm, setLockTerm] = useState(5);
+  const [payoutMethod, setPayoutMethod] = useState('monthly');
+  const [showROFRModal, setShowROFRModal] = useState(false);
+  const [activeFaq, setActiveFaq] = useState(null);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (email) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('bcf_investor_auth', 'true');
-    }
+  // Dynamic Financial Engines
+  const minimumEntryFloor = 500;
+  const targetedPreferredReturn = getTieredYield(lockTerm);
+  const monthlyCashFlow = (allocation * targetedPreferredReturn) / 12;
+  const annualCashFlow = allocation * targetedPreferredReturn;
+  const totalTermYield = annualCashFlow * lockTerm;
+
+  const toggleFaq = (index) => {
+    setActiveFaq(activeFaq === index ? null : index);
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem('bcf_investor_auth');
-  };
-
-  // Dynamic Yield Escalation Logic based on Capital Tier & Term
-  const getYieldRate = () => {
-    let base = 9.5;
-    if (targetCapital >= 50000) base = 10.5;
-    if (targetCapital >= 100000) base = 11.8;
-    if (targetCapital >= 250000) base = 13.2;
-
-    if (selectedLockTerm === '36') base += 1.0;
-    if (selectedLockTerm === '60') base += 2.2;
-    return base;
-  };
-
-  const annualYieldPercent = getYieldRate();
-  const annualReturnAmount = (targetCapital * (annualYieldPercent / 100));
-  const quarterlyPayout = annualReturnAmount / 4;
-
-  const handleAllocationSubmit = () => {
-    setSubmitted(true);
-    const payload = {
-      id: Date.now(),
-      title: `Co-Investment Allocation ($${Number(targetCapital).toLocaleString()})`,
-      type: 'Private Placement LP',
-      amount: Number(targetCapital),
-      yield: `${annualYieldPercent.toFixed(1)}%`,
-      term: `${selectedLockTerm} Months`,
-      mode: distributionMode,
-      date: new Date().toLocaleDateString()
-    };
-    if (onApplyForProduct) {
-      // Passes payload and simulates routing/syncing to investor workspace
-      onApplyForProduct(payload);
-    }
-  };
-
-  // If NOT authenticated, show the login gate overlay or view
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-[#040910] text-slate-100 font-sans pb-24">
-        {/* Subheader / Gateway Banner */}
-        <div className="border-b border-white/10 bg-[#07111f]/50 py-3 px-6">
-          <div className="mx-auto max-w-7xl flex items-center justify-between">
-            <span className="text-[10px] font-semibold tracking-[0.2em] text-sky-300 uppercase">
-              Private Placement Limited Partnership Gate
-            </span>
-          </div>
-        </div>
-
-        {/* Login Container */}
-        <div className="mx-auto max-w-md px-6 pt-20">
-          <div className="rounded-3xl border border-white/10 bg-[#07111f] p-8 shadow-2xl space-y-6">
-            <div className="text-center space-y-2">
-              <div className="h-12 w-12 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-300 mx-auto">
-                <Lock className="h-6 w-6" />
-              </div>
-              <h2 className="text-2xl font-bold text-white">Investor Portal Login</h2>
-              <p className="text-xs text-slate-400">Authenticate to access restricted co-investment yield matrices and private placement documents.</p>
-            </div>
-
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Investor Email</label>
-                <input 
-                  type="email" 
-                  required 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="investor@buickcityfinancial.com"
-                  className="w-full rounded-xl border border-white/10 bg-[#040910] px-4 py-3 text-sm text-white focus:border-sky-300 outline-none transition"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Password / Key</label>
-                <input 
-                  type="password" 
-                  required 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full rounded-xl border border-white/10 bg-[#040910] px-4 py-3 text-sm text-white focus:border-sky-300 outline-none transition"
-                />
-              </div>
-              <button 
-                type="submit"
-                className="w-full rounded-full bg-sky-300 py-3 text-xs font-bold text-slate-950 hover:bg-sky-200 transition shadow-lg shadow-sky-300/10 cursor-pointer mt-2"
-              >
-                Authenticate Session →
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // If authenticated, render the fully unlocked, dynamic interactive investment platform & dashboard
   return (
-    <div className="min-h-screen bg-[#040910] text-slate-100 font-sans pb-24">
-      {/* Subheader with Secure Logout */}
-      <div className="border-b border-white/10 bg-[#07111f]/50 py-3 px-6">
-        <div className="mx-auto max-w-7xl flex items-center justify-between">
-          <span className="text-[10px] font-semibold tracking-[0.2em] text-sky-300 uppercase">
-            Private Placement Limited Partnership Gate • Authorized
-          </span>
-
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-slate-300 hover:bg-white/10 transition cursor-pointer"
+    <div className="min-h-screen bg-[#060b13] text-slate-100 font-sans antialiased selection:bg-sky-500/30">
+      
+      {/* BRAND NAVIGATION HEADER */}
+      <header className="border-b border-slate-800 bg-[#060b13]/80 backdrop-blur-md sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-sky-500/10 rounded-xl text-sky-400 border border-sky-500/20">
+              <Landmark className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-lg font-black tracking-tight text-white block uppercase">
+                Buick City
+              </span>
+              <span className="text-xs font-bold tracking-widest text-slate-400 block uppercase -mt-1">
+                Financial Corporation
+              </span>
+            </div>
+          </div>
+          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-400">
+            <a href="#matrix" className="hover:text-white transition-colors">Yield Matrix</a>
+            <a href="#covenants" className="hover:text-white transition-colors">Protective Covenants</a>
+            <a href="#faq" className="hover:text-white transition-colors">Partnership FAQ</a>
+          </nav>
+          <button 
+            type="button" 
+            onClick={onNavigateToPortal}
+            className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 font-bold py-2.5 px-5 rounded-xl text-sm transition-all shadow-md"
           >
-            <LogOut className="h-3.5 w-3.5 text-slate-400" /> Secure Sign Out
+            Portal Login
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* Hero Header */}
-      <div className="mx-auto max-w-5xl px-6 pt-16 pb-12 text-center space-y-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-4 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-sky-300 uppercase">
-          <ShieldCheck className="h-3.5 w-3.5 text-sky-400" /> Secured Investor Workspace
+      {/* CORE MANIFESTO HERO BANNER */}
+      <div className="max-w-7xl mx-auto px-6 pt-16 pb-12 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-500/20 bg-sky-500/5 text-sky-400 text-xs font-medium mb-6 uppercase tracking-wider">
+          <Layers className="w-3 h-3" /> Private Placement Limited Partnership Gate
         </div>
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white">
-          The Alternative Real Estate <span className="text-sky-300">Capital Engine</span>
+        <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-6 max-w-4xl mx-auto leading-tight">
+          The Alternative Real Estate <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-400">Capital Engine</span>
         </h1>
-        <p className="mx-auto max-w-2xl text-slate-400 text-sm leading-relaxed">
+        <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed">
           Bypassing Wall Street volatility. Buick City Financial Corporation connects direct, passive capital allocations to stabilized, high-yielding regional assets.
         </p>
       </div>
 
-      {/* Interactive Co-Investment & Liquidity Section */}
-      <div className="mx-auto max-w-7xl px-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* PRIMARY WORKFLOW MATRIX GRID */}
+      <main className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 pb-16">
         
-        {/* Co-Investment Calculator Matrix */}
-        <div className="lg:col-span-2 rounded-3xl border border-white/10 bg-[#07111f] p-8 shadow-2xl space-y-6">
-          <div className="flex items-center justify-between border-b border-white/10 pb-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-300">
-                <TrendingUp className="h-5 w-5" />
+        {/* LEFT COLUMN: INTERACTIVE INPUT SIMULATOR & CONTROL NODES */}
+        <div id="calculator" className="lg:col-span-7 bg-[#0b1320] border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col justify-between border-t-2 border-t-sky-500">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+              <div className="p-2 bg-sky-500/10 rounded-lg text-sky-400">
+                <Calculator className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">Co-Investment Matrix</h3>
-                <p className="text-xs text-slate-400">Model allocations, lock horizons, and preferred cash flows.</p>
+                <h2 className="text-xl font-bold text-white">Co-Investment Matrix</h2>
+                <p className="text-xs text-slate-400 mt-0.5">Model allocations, lock horizons, and preferred cash flows.</p>
               </div>
             </div>
-            <span className="text-xs font-semibold text-sky-300 bg-sky-500/10 border border-sky-500/30 px-3 py-1 rounded-full">
-              Minimum Floor: $500
-            </span>
-          </div>
 
-          {/* Allocation Slider */}
-          <div className="space-y-3 pt-2">
-            <div className="flex justify-between text-xs font-semibold text-slate-300 uppercase tracking-wider">
-              <span>Target Capital Allocation Capital ($)</span>
-              <span className="text-sky-300 text-base font-bold">${Number(targetCapital).toLocaleString()}</span>
+            {/* CAPITAL ALLOCATION NODE */}
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <label className="text-sm font-semibold text-slate-300">
+                  Target Capital Allocation Capital ($)
+                </label>
+                <span className="text-xs font-bold text-slate-500">Minimum Entrance Floor: $500</span>
+              </div>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-lg font-bold">$</span>
+                <input
+                  type="number"
+                  min="500"
+                  step="500"
+                  value={allocation}
+                  onChange={(e) => setAllocation(Number(e.target.value))}
+                  className="w-full bg-[#060b13] border border-slate-700 rounded-xl py-4 pl-9 pr-4 text-xl font-black text-white focus:outline-none focus:border-sky-500 transition-colors"
+                />
+              </div>
             </div>
-            <input 
-              type="range" 
-              min="500" 
-              max="250000" 
-              step="500"
-              value={targetCapital}
-              onChange={(e) => {
-                setTargetCapital(Number(e.target.value));
-                setSubmitted(false);
-              }}
-              className="w-full accent-sky-300 bg-[#040910] cursor-pointer"
-            />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>$500 (Floor)</span>
-              <span>$50,000</span>
-              <span>$100,000</span>
-              <span>$250,000+</span>
-            </div>
-          </div>
 
-          {/* Lock Horizon Selector */}
-          <div className="space-y-2 pt-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">Lock Horizon Term</label>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { months: '12', label: '12 Months', desc: 'Standard Yield' },
-                { months: '36', label: '36 Months', desc: '+1.0% Bonus' },
-                { months: '60', label: '60 Months', desc: '+2.2% Max Yield' },
-              ].map((term) => (
+            {/* HORIZON LIFECYCLE DURATION NODES */}
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <label className="text-sm font-semibold text-slate-300">
+                  Select Partnership Lock-In Horizon
+                </label>
+                <span className="text-xs text-amber-400 flex items-center gap-1 font-bold bg-amber-500/5 px-2 py-0.5 rounded-full border border-amber-500/10">
+                  <Lock className="w-3 h-3" /> Term Commitments Enforced
+                </span>
+              </div>
+              <div className="grid grid-cols-5 gap-2">
+                {[1, 3, 5, 7, 10].map((year) => (
+                  <button
+                    key={year}
+                    type="button"
+                    onClick={() => setLockTerm(year)}
+                    className={`py-3.5 px-2 rounded-xl border font-black text-center text-sm transition-all flex flex-col items-center justify-center gap-1 ${
+                      lockTerm === year
+                        ? 'bg-sky-500/20 border-sky-500 text-white shadow-lg scale-[1.02]'
+                        : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
+                    }`}
+                  >
+                    <span className="tracking-tight">{year} Yr{year > 1 ? 's' : ''}</span>
+                    <span className="text-[10px] text-emerald-400 font-bold">{(getTieredYield(year) * 100).toFixed(2)}%</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* DISTRIBUTION SELECTION MATRIX */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-3">
+                Select Your Yield Distribution Preference
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <button
-                  key={term.months}
                   type="button"
-                  onClick={() => {
-                    setSelectedLockTerm(term.months);
-                    setSubmitted(false);
-                  }}
-                  className={`rounded-2xl border p-3 text-left transition cursor-pointer ${
-                    selectedLockTerm === term.months 
-                      ? 'border-sky-300 bg-sky-500/10 text-white shadow-lg shadow-sky-500/10' 
-                      : 'border-white/10 bg-[#040910] text-slate-400 hover:border-white/30'
+                  onClick={() => setPayoutMethod('monthly')}
+                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all ${
+                    payoutMethod === 'monthly'
+                      ? 'bg-sky-500/10 border-sky-500 text-white shadow-lg ring-1 ring-sky-500/30'
+                      : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
                   }`}
                 >
-                  <p className="text-xs font-bold text-white">{term.label}</p>
-                  <p className="text-[10px] text-sky-300 mt-0.5">{term.desc}</p>
+                  <div className="flex items-center gap-2 font-black text-sm text-slate-200">
+                    <DollarSign className="w-4 h-4 text-emerald-400" /> Dividend Income LP Track
+                  </div>
+                  <span className="text-xs text-slate-400 leading-relaxed">Receive your tiered preferred cash yields wired programmatically via ACH directly to your bank account on the 1st of every calendar month.</span>
                 </button>
-              ))}
-            </div>
-          </div>
 
-          {/* Distribution Mode Toggle */}
-          <div className="space-y-2 pt-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">Distribution Preference</label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setDistributionMode('compound')}
-                className={`rounded-xl border p-2.5 text-xs font-semibold transition cursor-pointer ${
-                  distributionMode === 'compound' 
-                    ? 'border-sky-300 bg-sky-500/10 text-white' 
-                    : 'border-white/10 bg-[#040910] text-slate-400 hover:border-white/30'
-                }`}
-              >
-                🔄 Compound Quarterly Reinvestment
-              </button>
-              <button
-                type="button"
-                onClick={() => setDistributionMode('payout')}
-                className={`rounded-xl border p-2.5 text-xs font-semibold transition cursor-pointer ${
-                  distributionMode === 'payout' 
-                    ? 'border-sky-300 bg-sky-500/10 text-white' 
-                    : 'border-white/10 bg-[#040910] text-slate-400 hover:border-white/30'
-                }`}
-              >
-                💵 Direct Quarterly Cash Payout
-              </button>
-            </div>
-          </div>
-
-          {/* Metrics Output Bar */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/10">
-            <div className="rounded-2xl border border-white/10 bg-[#040910] p-4 space-y-1">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">Est. Annual Yield</span>
-              <span className="text-xl font-bold text-emerald-400">{annualYieldPercent.toFixed(1)}%</span>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-[#040910] p-4 space-y-1">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">Quarterly Payout</span>
-              <span className="text-xl font-bold text-white">${Math.round(quarterlyPayout).toLocaleString()}</span>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-[#040910] p-4 space-y-1">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">Selected Horizon</span>
-              <span className="text-xl font-bold text-sky-300">{selectedLockTerm} Months</span>
-            </div>
-          </div>
-
-          {/* Allocation Submission CTA */}
-          <div className="pt-2">
-            {submitted ? (
-              <div className="flex items-center justify-center gap-2 w-full rounded-2xl bg-emerald-500/10 border border-emerald-500/30 py-4 text-xs font-bold text-emerald-300">
-                <CheckCircle2 className="h-4 w-4" /> Allocation Subscribed & Synced to Investor Workspace
+                <button
+                  type="button"
+                  onClick={() => setPayoutMethod('reinvest')}
+                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all ${
+                    payoutMethod === 'reinvest'
+                      ? 'bg-sky-500/10 border-sky-500 text-white shadow-lg ring-1 ring-sky-500/30'
+                      : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 font-black text-sm text-slate-200">
+                    <RefreshCw className="w-4 h-4 text-sky-400" /> Equity Accumulator LP Track
+                  </div>
+                  <span className="text-xs text-slate-400 leading-relaxed">Compound your regional real estate footprint by automatically reallocating distributions to acquire additional property equity blocks.</span>
+                </button>
               </div>
-            ) : (
-              <button
-                type="button"
-                onClick={handleAllocationSubmit}
-                className="w-full rounded-2xl bg-sky-300 py-4 text-xs font-bold text-slate-950 hover:bg-sky-200 transition shadow-lg shadow-sky-300/10 cursor-pointer"
-              >
-                Lock In ${Number(targetCapital).toLocaleString()} Allocation at {annualYieldPercent.toFixed(1)}% Yield →
-              </button>
-            )}
+            </div>
+
+            {/* SUMMARY STAT METRICS */}
+            <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="bg-[#060b13] p-4 rounded-xl border border-slate-800">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Preferred Return Rate</div>
+                <div className="text-2xl font-black text-sky-400">{(targetedPreferredReturn * 100).toFixed(2)}%</div>
+                <div className="text-xs text-slate-400 mt-1">Tiered Horizon Rate</div>
+              </div>
+              <div className="bg-[#060b13] p-4 rounded-xl border border-slate-800">
+                <div className="text-xs font-bold text-sky-400 uppercase tracking-wider mb-1">Partnership Status</div>
+                <div className="text-2xl font-black text-sky-400">LP Partner</div>
+                <div className="text-xs text-slate-400 mt-1">Passive Limited Partner</div>
+              </div>
+            </div>
+          </div>
+
+          {/* DYNAMIC WATERFALL CASH FLOW DISPLAY */}
+          <div className="border-t border-slate-800 pt-6 mt-6">
+            <div className="space-y-4 mb-6">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400 font-medium">Estimated Monthly Cash Flow</span>
+                <span className="text-xl font-bold text-emerald-400">${monthlyCashFlow.toFixed(2)} / mo</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400 font-medium">Annualized Preferred Yield</span>
+                <span className="text-xl font-bold text-white">${annualCashFlow.toFixed(2)} / yr</span>
+              </div>
+              <div className="flex justify-between items-center border-t border-dashed border-slate-800 pt-3">
+                <span className="text-white font-semibold">{lockTerm}-Year Cumulative Return Projection</span>
+                <span className="text-2xl font-black text-white">${totalTermYield.toFixed(2)} Cash</span>
+              </div>
+            </div>
+
+            <button 
+              type="button" 
+              onClick={onNavigateToPortal}
+              className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 group transition-all shadow-lg shadow-sky-500/10"
+            >
+              Request Private Placement Prospectus <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
         </div>
 
-        {/* Discretionary Liquidity & Covenants */}
-        <div className="rounded-3xl border border-white/10 bg-[#07111f] p-8 shadow-2xl space-y-6 flex flex-col justify-between">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300">
-                <Lock className="h-5 w-5" />
-              </div>
-              <h3 className="text-lg font-bold text-white">Discretionary Liquidity Restriction</h3>
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Co-investment units are illiquid asset allocations locked for the selected term horizon. Early redemption requests are subject to GP approval and Right of First Refusal (ROFR) provisions.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/10 bg-[#040910] p-4 space-y-2">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-300 block">Note:</span>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              Yield payouts originate from direct debt-service or net rental distributions across regional commercial and residential property holdings.
-            </p>
-          </div>
-        </div>
-
-      </div>
-
-      {/* Tiered Yield Escalation Reference Table */}
-      <div className="mx-auto max-w-7xl px-6 mt-12">
-        <div className="rounded-3xl border border-white/10 bg-[#07111f] p-8 shadow-2xl space-y-6">
-          <div className="flex items-center justify-between border-b border-white/10 pb-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-300">
-                <FileText className="h-5 w-5" />
+        {/* RIGHT COLUMN: COVENANTS & LIQUIDITY DISCLOSURES */}
+        <div className="lg:col-span-5 flex flex-col gap-6">
+          <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+            <div className="flex items-start gap-4">
+              <div className="p-2 bg-amber-500/10 rounded-lg text-amber-400 mt-1">
+                <Clock className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">Tiered Yield Escalation Matrix</h3>
-                <p className="text-xs text-slate-400">Referential breakdown of return ceilings by capital tier and commitment length.</p>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-base font-bold text-white">Discretionary Liquidity Restriction</h3>
+                  <button 
+                    type="button" 
+                    onClick={() => setShowROFRModal(true)}
+                    className="text-slate-500 hover:text-sky-400 transition-colors"
+                  >
+                    <HelpCircle className="w-4 h-4" />
+                  </button>
+                </div>
+                <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                  Co-investment units are illiquid asset allocations locked for the selected term horizon. Early redemption requests are subject to GP approval and Right of First Refusal (ROFR) provisions.
+                </p>
+                <div className="p-3 bg-[#060b13] rounded-lg border border-slate-800 text-xs text-slate-500">
+                  <span className="text-slate-300 font-semibold">Note:</span> Yield payouts originate from direct debt-service or net rental distributions across regional commercial and residential property holdings.
+                </div>
               </div>
             </div>
           </div>
 
+          <div id="covenants" className="bg-[#0b1320] border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-sky-500/10 rounded-lg text-sky-400">
+                <Shield className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-white">Investor Protection Covenants</h3>
+            </div>
+            <ul className="space-y-3 text-xs text-slate-400">
+              <li className="flex items-start gap-2">
+                <span className="text-sky-400 font-bold">•</span>
+                <span><strong className="text-slate-200">First-Position Asset Security:</strong> Capital allocations are collateralized against real property deeds or Senior Secured Mortgages.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-sky-400 font-bold">•</span>
+                <span><strong className="text-slate-200">Tiered Preferred Yield Priority:</strong> LPs receive distributions up to their tiered horizon return before Sponsor equity profit participation.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-sky-400 font-bold">•</span>
+                <span><strong className="text-slate-200">Quarterly Audited Statements:</strong> Fully transparent asset level accounting and occupancy performance reporting.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </main>
+
+      {/* MATRIX REFERENCE TABLE */}
+      <section id="matrix" className="max-w-7xl mx-auto px-6 pb-16">
+        <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl">
+          <div className="mb-6">
+            <h3 className="text-xl font-bold text-white mb-2">The Tiered Yield Escalation Matrix</h3>
+            <p className="text-sm text-slate-400">
+              By scaling preferred returns upward based on lock-in duration, longer terms are incentivized to provide stable, long-term treasury reserves.
+            </p>
+          </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-white/10 text-slate-400 uppercase tracking-wider">
-                  <th className="pb-3 font-semibold">Capital Tier</th>
-                  <th className="pb-3 font-semibold">12-Month Horizon</th>
-                  <th className="pb-3 font-semibold">36-Month Horizon</th>
-                  <th className="pb-3 font-semibold">60-Month Horizon</th>
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-[#060b13] text-slate-400 uppercase border-b border-slate-800">
+                <tr>
+                  <th className="p-3">Lock-In Horizon</th>
+                  <th className="p-3">Annual Preferred Yield</th>
+                  <th className="p-3">Monthly Payout (on $25,000)</th>
+                  <th className="p-3">Total Term Net Profit</th>
+                  <th className="p-3">Market Comparison Position</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-slate-300">
-                <tr>
-                  <td className="py-3 font-medium text-white">$500 – $49,995 (Standard)</td>
-                  <td className="py-3 text-slate-400">9.5%</td>
-                  <td className="py-3 text-sky-300">10.5%</td>
-                  <td className="py-3 text-emerald-400 font-bold">11.7%</td>
+              <tbody className="divide-y divide-slate-800">
+                <tr className={lockTerm === 1 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
+                  <td className="p-3 font-semibold text-sky-400">1-Year Lock</td>
+                  <td className="p-3 font-bold">6.00%</td>
+                  <td className="p-3">$125.00 / mo</td>
+                  <td className="p-3">$1,500.00</td>
+                  <td className="p-3 text-slate-400">Beats standard high-yield savings accounts and 12-month CDs.</td>
                 </tr>
-                <tr>
-                  <td className="py-3 font-medium text-white">$50,000 – $99,995 (Growth)</td>
-                  <td className="py-3 text-slate-400">10.5%</td>
-                  <td className="py-3 text-sky-300">11.5%</td>
-                  <td className="py-3 text-emerald-400 font-bold">12.7%</td>
+                <tr className={lockTerm === 3 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
+                  <td className="p-3 font-semibold text-sky-400">3-Year Lock</td>
+                  <td className="p-3 font-bold">7.50%</td>
+                  <td className="p-3">$156.25 / mo</td>
+                  <td className="p-3">$5,625.00</td>
+                  <td className="p-3 text-slate-400">Highly competitive with regional real estate notes.</td>
                 </tr>
-                <tr>
-                  <td className="py-3 font-medium text-white">$100,000 – $249,995 (Premier)</td>
-                  <td className="py-3 text-slate-400">11.8%</td>
-                  <td className="py-3 text-sky-300">12.8%</td>
-                  <td className="py-3 text-emerald-400 font-bold">14.0%</td>
+                <tr className={lockTerm === 5 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
+                  <td className="p-3 font-semibold text-sky-400">5-Year Lock</td>
+                  <td className="p-3 font-bold">8.50%</td>
+                  <td className="p-3">$177.08 / mo</td>
+                  <td className="p-3">$10,625.00</td>
+                  <td className="p-3 text-slate-400">Your core sweet-spot volume driver.</td>
                 </tr>
-                <tr>
-                  <td className="py-3 font-medium text-white">$250,000+ (Institutional)</td>
-                  <td className="py-3 text-slate-400">13.2%</td>
-                  <td className="py-3 text-sky-300">14.2%</td>
-                  <td className="py-3 text-emerald-400 font-bold">15.4%</td>
+                <tr className={lockTerm === 7 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
+                  <td className="p-3 font-semibold text-sky-400">7-Year Lock</td>
+                  <td className="p-3 font-bold">9.25%</td>
+                  <td className="p-3">$192.70 / mo</td>
+                  <td className="p-3">$16,187.50</td>
+                  <td className="p-3 text-slate-400">Matches maximum life of standard lending exit timelines.</td>
+                </tr>
+                <tr className={lockTerm === 10 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
+                  <td className="p-3 font-semibold text-sky-400">10-Year Lock</td>
+                  <td className="p-3 font-bold">10.00%</td>
+                  <td className="p-3">$208.33 / mo</td>
+                  <td className="p-3">$25,000.00</td>
+                  <td className="p-3 text-slate-400">Institutional-grade double-digit threshold. Doubles initial capital.</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* ROFR EXPLANATION MODAL */}
+      {showROFRModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-[#0b1320] border border-slate-800 rounded-2xl p-6 max-w-md w-full relative shadow-2xl">
+            <button 
+              type="button"
+              onClick={() => setShowROFRModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-amber-500/10 rounded-lg text-amber-400">
+                <Clock className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Right of First Refusal (ROFR)</h3>
+            </div>
+            <p className="text-sm text-slate-300 leading-relaxed mb-4">
+              If an LP requests an early exit before the term lock-in period concludes, Buick City Financial Corporation maintains the right to purchase or match third-party transfer offers for the unit allocation before outside sales occur.
+            </p>
+            <button 
+              type="button"
+              onClick={() => setShowROFRModal(false)}
+              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-xl transition-colors text-sm"
+            >
+              Understand &amp; Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
