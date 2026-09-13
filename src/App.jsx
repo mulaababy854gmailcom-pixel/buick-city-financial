@@ -1,6 +1,6 @@
 import { Building2, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 
 // Page & Component Imports
 import Home from "./pages/Home";
@@ -14,7 +14,16 @@ import ClientPortal from "./components/ClientPortal";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeApplications, setActiveApplications] = useState([]);
   const closeMenu = () => setMenuOpen(false);
+
+  // Function to handle product applications and forward to the dashboard
+  const handleApplyForProduct = (productPayload, navigateFunction) => {
+    setActiveApplications((prev) => [productPayload, ...prev]);
+    if (navigateFunction) {
+      navigateFunction('/investor-dashboard');
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col justify-between bg-[#07111f] text-slate-100">
@@ -99,17 +108,26 @@ function App() {
         )}
       </header>
 
-      {/* Dynamic View Rendering */}
+      {/* Dynamic View Rendering with React Router */}
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<ProductsPage />} />
+          <Route 
+            path="/products" 
+            element={<ProductsPage onApplyForProduct={handleApplyForProduct} />} 
+          />
           <Route path="/joint-ventures" element={<JointVenturesPage />} />
-          <Route path="/invest" element={<InvestPage />} />
+          <Route 
+            path="/invest" 
+            element={<InvestPage onApplyForProduct={handleApplyForProduct} />} 
+          />
           <Route path="/submit-deal" element={<SubmitDealPage />} />
           <Route path="/portal" element={<ClientPortal />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/investor-dashboard" element={<InvestorDashboard />} />
+          <Route 
+            path="/investor-dashboard" 
+            element={<InvestorDashboard activeApplications={activeApplications} />} 
+          />
         </Routes>
       </main>
 

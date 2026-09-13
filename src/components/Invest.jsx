@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Calculator, ArrowRight, Landmark, Percent, RefreshCw, DollarSign, Clock, HelpCircle, Lock, X, CheckCircle, ChevronRight, Layers } from 'lucide-react';
+import { Shield, Calculator, ArrowRight, Landmark, Percent, RefreshCw, DollarSign, Clock, HelpCircle, Lock, X, CheckCircle, ChevronLeft, Layers } from 'lucide-react';
 
 // Institutional Tiered Yield Matrix Mapping
 const getTieredYield = (year) => {
@@ -11,12 +11,13 @@ const getTieredYield = (year) => {
   return 0.0800; // Fallback
 };
 
-export default function Invest({ onNavigateToPortal }) {
+export default function Invest({ onNavigateToPortal, onApplyForProduct }) {
   const [allocation, setAllocation] = useState(25000);
   const [lockTerm, setLockTerm] = useState(5);
   const [payoutMethod, setPayoutMethod] = useState('monthly');
   const [showROFRModal, setShowROFRModal] = useState(false);
-  const [activeFaq, setActiveFaq] = useState(null);
+  const [isApplying, setIsApplying] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   // Dynamic Financial Engines
   const minimumEntryFloor = 500;
@@ -25,15 +26,158 @@ export default function Invest({ onNavigateToPortal }) {
   const annualCashFlow = allocation * targetedPreferredReturn;
   const totalTermYield = annualCashFlow * lockTerm;
 
-  const toggleFaq = (index) => {
-    setActiveFaq(activeFaq === index ? null : index);
+  const handleApplyClick = () => {
+    const productPayload = {
+      productName: 'Alternative Real Estate Capital Engine - LP Co-Investment',
+      allocation,
+      lockTerm,
+      payoutMethod,
+      targetedPreferredReturn,
+      monthlyCashFlow,
+      annualCashFlow,
+      totalTermYield
+    };
+
+    if (onApplyForProduct) {
+      onApplyForProduct(productPayload);
+    } else {
+      setIsApplying(true);
+    }
   };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
+  // RENDER APPLICATION VIEW WITH PRODUCT REQUIREMENTS & INFO
+  if (isApplying) {
+    return (
+      <div className="min-h-screen bg-[#060b13] text-slate-100 font-sans antialiased py-12 px-6">
+        <div className="max-w-3xl mx-auto">
+          <button 
+            type="button"
+            onClick={() => { setIsApplying(false); setSubmitted(false); }}
+            className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-8 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" /> Back to Matrix Simulator
+          </button>
+
+          <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-sky-500/10 rounded-xl text-sky-400 border border-sky-500/20">
+                <Landmark className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-xs font-bold tracking-widest text-sky-400 uppercase block">Formal Subscription Portal</span>
+                <h1 className="text-2xl font-black text-white">Limited Partnership Application</h1>
+              </div>
+            </div>
+
+            {/* SELECTED PRODUCT SUMMARY CARD */}
+            <div className="bg-[#060b13] border border-slate-800 rounded-2xl p-6 mb-8">
+              <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
+                Selected Product Parameters &amp; Terms
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <span className="text-slate-500 block text-xs">Target Allocation</span>
+                  <span className="text-white font-black text-lg">${allocation.toLocaleString()}</span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block text-xs">Lock-In Horizon</span>
+                  <span className="text-sky-400 font-black text-lg">{lockTerm} Years ({(targetedPreferredReturn * 100).toFixed(2)}%)</span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block text-xs">Distribution Track</span>
+                  <span className="text-emerald-400 font-black text-lg capitalize">{payoutMethod === 'monthly' ? 'Monthly Dividend' : 'Equity Reinvestment'}</span>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-slate-800/60 grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <span className="text-slate-500">Projected Monthly Payout:</span> <span className="text-slate-200 font-bold">${monthlyCashFlow.toFixed(2)} / mo</span>
+                </div>
+                <div>
+                  <span className="text-slate-500">Cumulative Term Yield:</span> <span className="text-slate-200 font-bold">${totalTermYield.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            {submitted ? (
+              <div className="text-center py-12 space-y-4">
+                <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/20">
+                  <CheckCircle className="w-8 h-8" />
+                </div>
+                <h2 className="text-2xl font-bold text-white">Application Received</h2>
+                <p className="text-slate-400 max-w-md mx-auto text-sm">
+                  Your formal subscription packet for the {lockTerm}-Year LP Track has been logged. Compliance and underwriting will review your documentation shortly.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsApplying(false)}
+                  className="mt-4 bg-sky-500 hover:bg-sky-400 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all"
+                >
+                  Return to Dashboard
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleFormSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase mb-2">Legal Full Name / Entity</label>
+                    <input required type="text" placeholder="Darius D. Thomas" className="w-full bg-[#060b13] border border-slate-700 rounded-xl p-3.5 text-sm text-white focus:outline-none focus:border-sky-500" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase mb-2">Primary Email Address</label>
+                    <input required type="email" placeholder="investor@buickcityfinancial.com" className="w-full bg-[#060b13] border border-slate-700 rounded-xl p-3.5 text-sm text-white focus:outline-none focus:border-sky-500" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase mb-2">Accredited Investor Status</label>
+                    <select className="w-full bg-[#060b13] border border-slate-700 rounded-xl p-3.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                      <option>Accredited Investor (Income / Net Worth)</option>
+                      <option>Qualified Purchaser</option>
+                      <option>Sophisticated Entity / Institutional</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase mb-2">Funding Source</label>
+                    <select className="w-full bg-[#060b13] border border-slate-700 rounded-xl p-3.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                      <option>Direct Wire Transfer (ACH / Fedwire)</option>
+                      <option>Self-Directed IRA / LLC Custodian</option>
+                      <option>Corporate Treasury Account</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-[#060b13] rounded-xl border border-slate-800 text-xs text-slate-400 space-y-2">
+                  <span className="font-bold text-slate-200 block uppercase tracking-wider">Product Compliance &amp; Requirements Note:</span>
+                  <p>By submitting this application, you acknowledge that capital allocations are locked for the selected {lockTerm}-year horizon, subject to Right of First Refusal (ROFR) provisions and first-position asset security covenants.</p>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-sky-500/10 cursor-pointer text-sm"
+                >
+                  Execute Subscription Application <ArrowRight className="w-4 h-4" />
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#060b13] text-slate-100 font-sans antialiased selection:bg-sky-500/30">
       
       {/* BRAND NAVIGATION HEADER */}
-      <header className="border-b border-slate-800 bg-[#060b13]/80 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-slate-800 bg-[#060b13]/85 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-sky-500/10 rounded-xl text-sky-400 border border-sky-500/20">
@@ -56,7 +200,7 @@ export default function Invest({ onNavigateToPortal }) {
           <button 
             type="button" 
             onClick={onNavigateToPortal}
-            className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 font-bold py-2.5 px-5 rounded-xl text-sm transition-all shadow-md"
+            className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 font-bold py-2.5 px-5 rounded-xl text-sm transition-all shadow-md cursor-pointer"
           >
             Portal Login
           </button>
@@ -129,7 +273,7 @@ export default function Invest({ onNavigateToPortal }) {
                     key={year}
                     type="button"
                     onClick={() => setLockTerm(year)}
-                    className={`py-3.5 px-2 rounded-xl border font-black text-center text-sm transition-all flex flex-col items-center justify-center gap-1 ${
+                    className={`py-3.5 px-2 rounded-xl border font-black text-center text-sm transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
                       lockTerm === year
                         ? 'bg-sky-500/20 border-sky-500 text-white shadow-lg scale-[1.02]'
                         : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
@@ -151,7 +295,7 @@ export default function Invest({ onNavigateToPortal }) {
                 <button
                   type="button"
                   onClick={() => setPayoutMethod('monthly')}
-                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all ${
+                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all cursor-pointer ${
                     payoutMethod === 'monthly'
                       ? 'bg-sky-500/10 border-sky-500 text-white shadow-lg ring-1 ring-sky-500/30'
                       : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
@@ -166,7 +310,7 @@ export default function Invest({ onNavigateToPortal }) {
                 <button
                   type="button"
                   onClick={() => setPayoutMethod('reinvest')}
-                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all ${
+                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all cursor-pointer ${
                     payoutMethod === 'reinvest'
                       ? 'bg-sky-500/10 border-sky-500 text-white shadow-lg ring-1 ring-sky-500/30'
                       : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
@@ -214,10 +358,10 @@ export default function Invest({ onNavigateToPortal }) {
 
             <button 
               type="button" 
-              onClick={onNavigateToPortal}
-              className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 group transition-all shadow-lg shadow-sky-500/10"
+              onClick={handleApplyClick}
+              className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 group transition-all shadow-lg shadow-sky-500/10 cursor-pointer"
             >
-              Request Private Placement Prospectus <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              Apply For This Product <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>
@@ -235,7 +379,7 @@ export default function Invest({ onNavigateToPortal }) {
                   <button 
                     type="button" 
                     onClick={() => setShowROFRModal(true)}
-                    className="text-slate-500 hover:text-sky-400 transition-colors"
+                    className="text-slate-500 hover:text-sky-400 transition-colors cursor-pointer"
                   >
                     <HelpCircle className="w-4 h-4" />
                   </button>
@@ -344,7 +488,7 @@ export default function Invest({ onNavigateToPortal }) {
             <button 
               type="button"
               onClick={() => setShowROFRModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white"
+              className="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -360,7 +504,7 @@ export default function Invest({ onNavigateToPortal }) {
             <button 
               type="button"
               onClick={() => setShowROFRModal(false)}
-              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-xl transition-colors text-sm"
+              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-xl transition-colors text-sm cursor-pointer"
             >
               Understand &amp; Close
             </button>
