@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, CheckCircle, Send, Building2, Shield, ArrowRight } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Send, Sparkles, Shield, ArrowRight, Zap, Building2 } from 'lucide-react';
 
 export default function LoanProducts({ onApplyForProduct }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -19,11 +19,13 @@ export default function LoanProducts({ onApplyForProduct }) {
       category: 'Community Equity (CEYS)',
       title: 'Community Equity-Yield Swap (CEYS)',
       badge: 'Flagship Product • High-Impact Option',
+      badgeColor: 'bg-amber-500/10 text-amber-300 border-amber-500/30',
+      glowColor: 'group-hover:border-amber-500/50',
       description: 'Deep debt service subsidies engineered for urban revitalization. Discounts baseline monthly debt service down to a 4.50% interest-only floor—reducing debt overhead by over 55%. Designed to make urban redevelopment viable while maintaining affordable community rents.',
       details: [
-        { label: 'INTEREST RATE FLOOR', value: '4.50% Interest-Only' },
+        { label: 'INTEREST RATE FLOOR', value: '4.50% Interest-Only', highlight: 'text-amber-300' },
         { label: 'EQUITY STRUCTURE', value: '20% Passive Equity (Holding LLC)' },
-        { label: 'DEBT OVERHEAD CUT', value: '55%+ Monthly Savings' },
+        { label: 'DEBT OVERHEAD CUT', value: '55%+ Monthly Savings', highlight: 'text-emerald-400' },
         { label: 'SOFTWARE REQUIREMENT', value: 'Integrated App Platform Covenant' }
       ],
       bullets: [
@@ -37,11 +39,13 @@ export default function LoanProducts({ onApplyForProduct }) {
       category: 'Cost-Plus Rehab',
       title: 'Cost-Plus Rehab Bridge Loan',
       badge: 'Fix & Flip / Reposition',
+      badgeColor: 'bg-sky-500/10 text-sky-300 border-sky-500/30',
+      glowColor: 'group-hover:border-sky-500/50',
       description: 'Short-term capital for property acquisition and full rehab. Flexible, fast-closing capital for commercial fix-and-flip, repositioning, and value-add projects. Funds released programmatically via escrowed milestone draws.',
       details: [
         { label: 'MAX LOAN-TO-COST (LTC)', value: 'Up to 85%' },
         { label: 'MAX AFTER-REPAIR VALUE (ARV)', value: 'Up to 75%' },
-        { label: 'INTEREST RATE RANGE', value: '9.50% - 11.50% (IO)' },
+        { label: 'INTEREST RATE RANGE', value: '9.50% - 11.50% (IO)', highlight: 'text-sky-300' },
         { label: 'DISBURSEMENT MODEL', value: 'Escrowed Milestone Draws' }
       ],
       bullets: [
@@ -55,6 +59,8 @@ export default function LoanProducts({ onApplyForProduct }) {
       category: 'Development Funding',
       title: 'Standard Ground-Up Construction',
       badge: 'Full Project Capitalization',
+      badgeColor: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+      glowColor: 'group-hover:border-emerald-500/50',
       description: 'Complete ground-up development capital disbursed against physical validation of site grading, shell framing, and mechanical milestones.',
       details: [
         { label: 'MAX LOAN-TO-COST (LTC)', value: 'Up to 75%' },
@@ -73,9 +79,11 @@ export default function LoanProducts({ onApplyForProduct }) {
       category: 'Permanent Portfolio Financing',
       title: 'Standard Institutional DSCR',
       badge: 'Long-term Cash-Flow Lending',
+      badgeColor: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30',
+      glowColor: 'group-hover:border-indigo-500/50',
       description: 'Traditional long-term commercial financing underwritten purely against property cash flow. No tax returns or equity splits required.',
       details: [
-        { label: 'TARGET DSCR FLOOR', value: '1.20x - 1.25x DSCR' },
+        { label: 'TARGET DSCR FLOOR', value: '1.20x - 1.25x DSCR', highlight: 'text-indigo-300' },
         { label: 'AMORTIZATION', value: '30-Year Amortization Schedule' },
         { label: 'EQUITY SPLIT', value: '0% (100% Borrower Retained)' },
         { label: 'UNDERWRITING BASIS', value: 'Property Cash Flow Only' }
@@ -84,6 +92,26 @@ export default function LoanProducts({ onApplyForProduct }) {
         'No personal tax return or W-2 verification required',
         'Long-term 30-year amortization for maximum stability',
         'Ideal for stabilized multi-family and residential rental portfolios'
+      ]
+    },
+    {
+      id: 'micro-dscr',
+      category: 'Urban Core Special',
+      title: 'Flint Micro-DSCR Addendum',
+      badge: 'Urban Core Special • High-Yield',
+      badgeColor: 'bg-rose-500/10 text-rose-300 border-rose-500/30',
+      glowColor: 'group-hover:border-rose-500/50',
+      description: 'Commercial debt starting down to a $25,000 minimum loan balance. Bypasses traditional $100,000 national commercial lending floors to support small-balance urban property investors by anchoring to a 1.35x DSCR risk premium.',
+      details: [
+        { label: 'MINIMUM LOAN AMOUNT', value: '$25,000 (Floor Bypassed)', highlight: 'text-rose-300' },
+        { label: 'REQUIRED DSCR FLOOR', value: '1.35x DSCR' },
+        { label: 'TARGET MARKET', value: 'Flint & Metro Regional Matrix' },
+        { label: 'UNDERWRITING BASIS', value: 'Alternative Income Capitalization' }
+      ],
+      bullets: [
+        'Unlocks commercial financing for small-scale turnkey properties',
+        'Overcomes frozen residential sales comp bottlenecks',
+        'Creates clear entry path for community real estate operators'
       ]
     }
   ];
@@ -121,9 +149,11 @@ export default function LoanProducts({ onApplyForProduct }) {
           <ArrowLeft className="h-4 w-4" /> Back to All Products
         </button>
 
-        <div className="rounded-3xl border border-white/10 bg-[#07111f] p-8 md:p-10 shadow-2xl space-y-6">
+        <div className="rounded-3xl border border-white/10 bg-[#07111f] p-8 md:p-10 shadow-2xl space-y-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
+          
           <div className="space-y-3">
-            <span className="rounded-full border border-sky-300/40 bg-sky-300/10 px-3 py-1 text-[10px] font-semibold tracking-[0.2em] text-sky-300 uppercase inline-block">
+            <span className={`rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.2em] uppercase inline-block ${selectedProduct.badgeColor}`}>
               {selectedProduct.badge}
             </span>
             <h2 className="text-3xl font-bold tracking-tight text-white">{selectedProduct.title}</h2>
@@ -132,15 +162,15 @@ export default function LoanProducts({ onApplyForProduct }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-white/10">
             {selectedProduct.details.map((detail, idx) => (
-              <div key={idx} className="rounded-2xl border border-white/10 bg-[#040910] p-4 flex justify-between items-center">
+              <div key={idx} className="rounded-2xl border border-white/10 bg-[#040910] p-4 flex justify-between items-center shadow-inner">
                 <span className="text-[11px] font-semibold tracking-wider text-slate-400">{detail.label}</span>
-                <span className="text-xs font-bold text-white">{detail.value}</span>
+                <span className={`text-xs font-bold ${detail.highlight || 'text-white'}`}>{detail.value}</span>
               </div>
             ))}
           </div>
 
           <div className="space-y-3 pt-2">
-            <h4 className="text-xs font-bold tracking-wider text-slate-300 uppercase">Underwriting Highlights</h4>
+            <h4 className="text-xs font-bold tracking-wider text-sky-300 uppercase">Underwriting Highlights</h4>
             <ul className="space-y-2">
               {selectedProduct.bullets.map((bullet, bIdx) => (
                 <li key={bIdx} className="flex items-center gap-2 text-sm text-slate-300">
@@ -233,7 +263,7 @@ export default function LoanProducts({ onApplyForProduct }) {
               <div className="pt-4">
                 <button 
                   type="submit"
-                  className="w-full rounded-full bg-sky-300 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-sky-200 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full rounded-full bg-sky-300 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-sky-200 cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-sky-300/10"
                 >
                   <Send className="h-4 w-4" /> Submit Official Product Application
                 </button>
@@ -249,19 +279,21 @@ export default function LoanProducts({ onApplyForProduct }) {
     <div className="mx-auto max-w-7xl px-6 py-8 space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {products.map((product) => (
-          <div key={product.id} className="rounded-3xl border border-white/10 bg-[#07111f] p-8 shadow-xl flex flex-col justify-between hover:border-sky-300/40 transition-all group">
+          <div key={product.id} className={`rounded-3xl border border-white/10 bg-[#07111f] p-8 shadow-xl flex flex-col justify-between transition-all group relative overflow-hidden ${product.glowColor}`}>
+            <div className="absolute top-0 right-0 w-48 h-48 bg-sky-500/5 rounded-full blur-2xl pointer-events-none" />
+
             <div className="space-y-4">
-              <span className="rounded-full border border-sky-300/40 bg-sky-300/10 px-3 py-1 text-[10px] font-semibold tracking-[0.2em] text-sky-300 uppercase inline-block">
-                {product.category}
+              <span className={`rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.2em] uppercase inline-block ${product.badgeColor}`}>
+                {product.badge}
               </span>
               <h3 className="text-2xl font-bold tracking-tight text-white group-hover:text-sky-300 transition-colors">{product.title}</h3>
               <p className="text-sm text-slate-300 leading-relaxed">{product.description}</p>
 
               <div className="grid grid-cols-2 gap-2 pt-4 border-t border-white/10">
                 {product.details.slice(0, 2).map((det, dIdx) => (
-                  <div key={dIdx} className="rounded-xl border border-white/10 bg-[#040910] p-3">
+                  <div key={dIdx} className="rounded-xl border border-white/10 bg-[#040910] p-3 shadow-inner">
                     <span className="text-[10px] font-semibold tracking-wider text-slate-400 block">{det.label}</span>
-                    <span className="text-xs font-bold text-white mt-0.5 block">{det.value}</span>
+                    <span className={`text-xs font-bold mt-0.5 block ${det.highlight || 'text-white'}`}>{det.value}</span>
                   </div>
                 ))}
               </div>
@@ -271,7 +303,7 @@ export default function LoanProducts({ onApplyForProduct }) {
               <button
                 type="button"
                 onClick={() => setSelectedProduct(product)}
-                className="w-full rounded-full bg-sky-300 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-sky-200 cursor-pointer flex items-center justify-center gap-2"
+                className="w-full rounded-full bg-sky-300 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-sky-200 cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-sky-300/10"
               >
                 Apply for this product →
               </button>
