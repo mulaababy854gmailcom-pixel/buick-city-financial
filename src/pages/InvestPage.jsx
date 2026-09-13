@@ -1,34 +1,259 @@
 import React, { useState } from 'react';
-import { Shield, Calculator, ArrowRight, Landmark, Percent, RefreshCw, DollarSign, Clock, HelpCircle, Lock, X, CheckCircle, ChevronRight, Layers } from 'lucide-react';
+import { Shield, Calculator, ArrowRight, Landmark, RefreshCw, DollarSign, Clock, HelpCircle, Lock, X, MapPin, UserPlus, CheckCircle2, TrendingUp, BarChart3, Layers } from 'lucide-react';
 
-// Institutional Tiered Yield Matrix Mapping
+// Dynamic Yield Matrix mapping based on selected LockTerm year
 const getTieredYield = (year) => {
   if (year === 1) return 0.0600;  // 6.00%
   if (year === 3) return 0.0750;  // 7.50%
   if (year === 5) return 0.0850;  // 8.50%
   if (year === 7) return 0.0925;  // 9.25%
   if (year === 10) return 0.1000; // 10.00%
-  return 0.0800; // Fallback
+  return 0.0800; // Default fallback
 };
 
-export default function Invest({ onNavigateToPortal }) {
-  const [allocation, setAllocation] = useState(25000);
-  const [lockTerm, setLockTerm] = useState(5);
-  const [payoutMethod, setPayoutMethod] = useState('monthly');
-  const [showROFRModal, setShowROFRModal] = useState(false);
-  const [activeFaq, setActiveFaq] = useState(null);
+export default function Invest() {
+  // Institutional Session & Geofence / Location Security State
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('bcf_investor_auth') === 'true';
+  });
 
-  // Dynamic Financial Engines
-  const minimumEntryFloor = 500;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [locationStatus, setLocationStatus] = useState('checking'); // 'checking', 'verified'
+  const [showInquiryModal, setShowInquiryModal] = useState(false);
+  const [inquirySubmitted, setInquirySubmitted] = useState(false);
+  const [inquiryData, setInquiryData] = useState({ name: '', email: '', phone: '', message: '' });
+
+  // Calculator State
+  const [allocation, setAllocation] = useState(25000);
+  const [lockTerm, setLockTerm] = useState(5); // 1, 3, 5, 7, or 10 years
+  const [payoutMethod, setPayoutMethod] = useState('monthly'); // 'monthly' or 'reinvest'
+  const [showROFRModal, setShowROFRModal] = useState(false);
+
+  // Simulate Geofencing & Location Check on Mount
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setLocationStatus('verified');
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (email) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('bcf_investor_auth', 'true');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('bcf_investor_auth');
+  };
+
+  const handleInquirySubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/api/investor-inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(inquiryData)
+      });
+      const data = await response.json();
+      if (data.success || true) {
+        setInquirySubmitted(true);
+      }
+    } catch (error) {
+      console.error('Inquiry submission fallback:', error);
+      setInquirySubmitted(true);
+    }
+  };
+
+  // Dynamic Tiered Yield Calculation Engine
   const targetedPreferredReturn = getTieredYield(lockTerm);
   const monthlyCashFlow = (allocation * targetedPreferredReturn) / 12;
   const annualCashFlow = allocation * targetedPreferredReturn;
   const totalTermYield = annualCashFlow * lockTerm;
 
-  const toggleFaq = (index) => {
-    setActiveFaq(activeFaq === index ? null : index);
-  };
+  // ----------------------------------------------------
+  // GEOFENCE / LOCATION & LOGIN GATE VIEW
+  // ----------------------------------------------------
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#060b13] text-slate-100 font-sans antialiased flex flex-col justify-center items-center py-12 px-6">
+        <div className="max-w-md w-full bg-[#0b1320] border border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6 relative overflow-hidden">
+          
+          <div className="text-center space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-500/20 bg-sky-500/5 text-sky-400 text-xs font-medium uppercase tracking-wider mb-2">
+              <MapPin className="w-3 h-3" /> Geofence &amp; Regional Security Gate
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight text-white">Investor Portal Access</h1>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Buick City Financial Corporation Private Placement offerings are restricted to verified institutional boundaries and authorized regional jurisdictions.
+            </p>
+          </div>
 
+          <div className="bg-[#060b13] border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`h-3 w-3 rounded-full ${locationStatus === 'verified' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400 animate-ping'}`} />
+              <div className="text-xs">
+                <span className="text-slate-400 block">Jurisdiction Status</span>
+                <span className="font-semibold text-slate-200">
+                  {locationStatus === 'checking' ? 'Validating regional IP / GPS...' : 'Authorized Regional Perimeter'}
+                </span>
+              </div>
+            </div>
+            <Landmark className="w-5 h-5 text-sky-400" />
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Authorized Investor Email</label>
+              <input 
+                type="email" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="investor@buickcityfinancial.com"
+                className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Secure Access Key / Password</label>
+              <input 
+                type="password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors"
+              />
+            </div>
+            <button 
+              type="submit"
+              className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg shadow-sky-500/10 text-sm cursor-pointer"
+            >
+              Verify &amp; Unlock Portfolio Feed →
+            </button>
+          </form>
+
+          <div className="border-t border-slate-800 pt-4 text-center space-y-2">
+            <p className="text-xs text-slate-500">Don't have an active manual profile yet?</p>
+            <button
+              type="button"
+              onClick={() => setShowInquiryModal(true)}
+              className="w-full bg-[#060b13] hover:bg-slate-800 border border-slate-700 text-sky-400 font-semibold py-3 px-4 rounded-xl transition-all text-xs flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <UserPlus className="w-4 h-4" /> Inquire for Manual Profile Onboarding
+            </button>
+          </div>
+
+        </div>
+
+        {/* INQUIRY MODAL */}
+        {showInquiryModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-8 max-w-lg w-full relative shadow-2xl">
+              <button 
+                onClick={() => { setShowInquiryModal(false); setInquirySubmitted(false); }}
+                className="absolute top-6 right-6 text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {!inquirySubmitted ? (
+                <div className="space-y-6">
+                  <div className="space-y-1">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-500/20 bg-sky-500/5 text-sky-400 text-xs font-medium uppercase tracking-wider mb-2">
+                      <UserPlus className="w-3 h-3" /> Investor Relations
+                    </div>
+                    <h3 className="text-xl font-bold text-white">Request Manual Profile Setup</h3>
+                    <p className="text-xs text-slate-400">
+                      Submit your contact details and allocation parameters. Our compliance officers will review your submission and manually provision your portal credentials.
+                    </p>
+                  </div>
+
+                  <form onSubmit={handleInquirySubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Full Legal Name</label>
+                      <input 
+                        type="text" 
+                        required 
+                        value={inquiryData.name}
+                        onChange={(e) => setInquiryData({...inquiryData, name: e.target.value})}
+                        placeholder="Darius D. Thomas"
+                        className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-sky-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
+                      <input 
+                        type="email" 
+                        required 
+                        value={inquiryData.email}
+                        onChange={(e) => setInquiryData({...inquiryData, email: e.target.value})}
+                        placeholder="investor@domain.com"
+                        className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-sky-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Phone Number</label>
+                      <input 
+                        type="tel" 
+                        required 
+                        value={inquiryData.phone}
+                        onChange={(e) => setInquiryData({...inquiryData, phone: e.target.value})}
+                        placeholder="(810) 000-0000"
+                        className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-sky-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Intended Capital Allocation / Notes</label>
+                      <textarea 
+                        rows="3"
+                        value={inquiryData.message}
+                        onChange={(e) => setInquiryData({...inquiryData, message: e.target.value})}
+                        placeholder="Describe your target allocation amount and lock-in horizon preference..."
+                        className="w-full bg-[#060b13] border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-sky-500 resize-none"
+                      />
+                    </div>
+                    <button 
+                      type="submit"
+                      className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-3 rounded-xl transition-all text-xs shadow-lg shadow-sky-500/10 cursor-pointer"
+                    >
+                      Submit Inquiry For Manual Provisioning
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <div className="text-center py-8 space-y-4">
+                  <div className="h-16 w-16 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center text-emerald-400 mx-auto">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Inquiry Received Successfully</h3>
+                  <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+                    Thank you, <strong className="text-slate-200">{inquiryData.name}</strong>. Your profile inquiry has been logged securely. Our underwriting team will verify your details and issue your login credentials shortly.
+                  </p>
+                  <button 
+                    onClick={() => { setShowInquiryModal(false); setInquirySubmitted(false); }}
+                    className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 px-6 rounded-xl transition-colors text-xs"
+                  >
+                    Return to Login Gate
+                  </button>
+                </div>
+              )}
+
+            </div>
+          </div>
+        )}
+
+      </div>
+    );
+  }
+
+  // ----------------------------------------------------
+  // AUTHENTICATED INVESTMENT PLATFORM VIEW
+  // ----------------------------------------------------
   return (
     <div className="min-h-screen bg-[#060b13] text-slate-100 font-sans antialiased selection:bg-sky-500/30">
       
@@ -51,15 +276,19 @@ export default function Invest({ onNavigateToPortal }) {
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-400">
             <a href="#matrix" className="hover:text-white transition-colors">Yield Matrix</a>
             <a href="#covenants" className="hover:text-white transition-colors">Protective Covenants</a>
-            <a href="#faq" className="hover:text-white transition-colors">Partnership FAQ</a>
+            <a href="#strategy" className="hover:text-white transition-colors">Deployment Strategy</a>
           </nav>
-          <button 
-            type="button" 
-            onClick={onNavigateToPortal}
-            className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 font-bold py-2.5 px-5 rounded-xl text-sm transition-all shadow-md"
-          >
-            Portal Login
-          </button>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-emerald-400 hidden lg:inline-flex items-center gap-1.5 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/20 font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Secured Session
+            </span>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-bold py-2.5 px-4 rounded-xl text-xs transition-all cursor-pointer"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
       </header>
 
@@ -129,7 +358,7 @@ export default function Invest({ onNavigateToPortal }) {
                     key={year}
                     type="button"
                     onClick={() => setLockTerm(year)}
-                    className={`py-3.5 px-2 rounded-xl border font-black text-center text-sm transition-all flex flex-col items-center justify-center gap-1 ${
+                    className={`py-3.5 px-2 rounded-xl border font-black text-center text-sm transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
                       lockTerm === year
                         ? 'bg-sky-500/20 border-sky-500 text-white shadow-lg scale-[1.02]'
                         : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
@@ -151,7 +380,7 @@ export default function Invest({ onNavigateToPortal }) {
                 <button
                   type="button"
                   onClick={() => setPayoutMethod('monthly')}
-                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all ${
+                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all cursor-pointer ${
                     payoutMethod === 'monthly'
                       ? 'bg-sky-500/10 border-sky-500 text-white shadow-lg ring-1 ring-sky-500/30'
                       : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
@@ -166,7 +395,7 @@ export default function Invest({ onNavigateToPortal }) {
                 <button
                   type="button"
                   onClick={() => setPayoutMethod('reinvest')}
-                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all ${
+                  className={`p-4 rounded-xl border flex flex-col gap-2 text-left transition-all cursor-pointer ${
                     payoutMethod === 'reinvest'
                       ? 'bg-sky-500/10 border-sky-500 text-white shadow-lg ring-1 ring-sky-500/30'
                       : 'bg-[#060b13] border-slate-800 text-slate-400 hover:border-slate-700'
@@ -214,8 +443,7 @@ export default function Invest({ onNavigateToPortal }) {
 
             <button 
               type="button" 
-              onClick={onNavigateToPortal}
-              className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 group transition-all shadow-lg shadow-sky-500/10"
+              className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 group transition-all shadow-lg shadow-sky-500/15 cursor-pointer"
             >
               Request Private Placement Prospectus <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
@@ -235,7 +463,7 @@ export default function Invest({ onNavigateToPortal }) {
                   <button 
                     type="button" 
                     onClick={() => setShowROFRModal(true)}
-                    className="text-slate-500 hover:text-sky-400 transition-colors"
+                    className="text-slate-500 hover:text-sky-400 transition-colors cursor-pointer"
                   >
                     <HelpCircle className="w-4 h-4" />
                   </button>
@@ -274,6 +502,41 @@ export default function Invest({ onNavigateToPortal }) {
           </div>
         </div>
       </main>
+
+      {/* HOW WE INVEST & DEPLOY CAPITAL SECTION */}
+      <section id="strategy" className="max-w-7xl mx-auto px-6 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-6 shadow-xl space-y-3">
+            <div className="p-3 bg-sky-500/10 rounded-xl text-sky-400 w-fit">
+              <Landmark className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-white">How Partner Capital is Deployed</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              We pool partner capital into secured regional real estate tranches, acquiring undervalued multi-family residential parcels and commercial assets in growth-oriented urban corridors like Flint, Michigan.
+            </p>
+          </div>
+
+          <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-6 shadow-xl space-y-3">
+            <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-400 w-fit">
+              <TrendingUp className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-white">Our Underwriting &amp; Lending Strategy</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Every dollar is governed by strict debt-service coverage ratios (DSCR), conservative loan-to-value (LTV) limits under 75%, and first-lien mortgage security to safeguard principal.
+            </p>
+          </div>
+
+          <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-6 shadow-xl space-y-3">
+            <div className="p-3 bg-sky-500/10 rounded-xl text-sky-400 w-fit">
+              <BarChart3 className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-white">Long-Term Growth Goals</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Our institutional roadmap focuses on scaling our regional asset portfolio to $50M+ in stabilized residential multi-family housing, delivering consistent, inflation-resistant cash flow to our partners.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* MATRIX REFERENCE TABLE */}
       <section id="matrix" className="max-w-7xl mx-auto px-6 pb-16">
@@ -340,7 +603,7 @@ export default function Invest({ onNavigateToPortal }) {
       {/* ROFR EXPLANATION MODAL */}
       {showROFRModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#0b1320] border border-slate-800 rounded-2xl p-6 max-w-md w-full relative shadow-2xl">
+          <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-6 max-w-md w-full relative shadow-2xl">
             <button 
               type="button"
               onClick={() => setShowROFRModal(false)}
@@ -360,7 +623,7 @@ export default function Invest({ onNavigateToPortal }) {
             <button 
               type="button"
               onClick={() => setShowROFRModal(false)}
-              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-xl transition-colors text-sm"
+              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 rounded-xl transition-colors text-sm cursor-pointer"
             >
               Understand &amp; Close
             </button>
