@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function ClientPortal({ onLaunchWizard, onSubmitDeal }) {
+export default function ClientPortal() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -63,12 +63,6 @@ export default function ClientPortal({ onLaunchWizard, onSubmitDeal }) {
             <span className="text-xs uppercase tracking-widest text-cyan-400 font-semibold">Client Portal Dashboard</span>
             <h1 className="text-3xl font-extrabold mt-1">Active Loan Applications</h1>
           </div>
-          <button 
-            onClick={onSubmitDeal}
-            className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-cyan-500/20 flex items-center gap-2"
-          >
-            + Submit New Deal
-          </button>
         </div>
 
         {applications.length === 0 ? (
@@ -77,13 +71,7 @@ export default function ClientPortal({ onLaunchWizard, onSubmitDeal }) {
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
             </div>
             <h3 className="text-xl font-bold mb-2">No Applications Found</h3>
-            <p className="text-slate-400 text-sm mb-8">You haven't submitted any commercial real estate deals yet. Launch the deal wizard to configure your first underwriting package.</p>
-            <button 
-              onClick={onLaunchWizard}
-              className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition-all shadow-lg shadow-cyan-500/20"
-            >
-              Launch Deal Wizard
-            </button>
+            <p className="text-slate-400 text-sm">You haven't submitted any commercial real estate deals yet. Launch the deal wizard to configure your first underwriting package.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
