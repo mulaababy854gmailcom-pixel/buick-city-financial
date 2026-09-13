@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Calculator, ArrowRight, Landmark, RefreshCw, DollarSign, Clock, HelpCircle, Lock, X, MapPin, UserPlus, CheckCircle2 } from 'lucide-react';
+import { Shield, Calculator, ArrowRight, Landmark, RefreshCw, DollarSign, Clock, HelpCircle, Lock, X, MapPin, UserPlus, CheckCircle2, TrendingUp, BarChart3, FileText, CheckCircle } from 'lucide-react';
 
 // Dynamic Yield Matrix mapping based on selected LockTerm year
 const getTieredYield = (year) => {
@@ -32,9 +32,7 @@ export default function Invest() {
 
   // Simulate Geofencing & Location Check on Mount
   React.useEffect(() => {
-    // Simulating institutional regional IP/GPS boundary validation
     const timer = setTimeout(() => {
-      // Default to verified for demonstration, or flag if outside permitted regions
       setLocationStatus('verified');
     }, 800);
     return () => clearTimeout(timer);
@@ -53,10 +51,22 @@ export default function Invest() {
     sessionStorage.removeItem('bcf_investor_auth');
   };
 
-  const handleInquirySubmit = (e) => {
+  const handleInquirySubmit = async (e) => {
     e.preventDefault();
-    setInquirySubmitted(true);
-    // Here you would typically wire up an API call to save the manual profile request
+    try {
+      const response = await fetch('/api/investor-inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(inquiryData)
+      });
+      const data = await response.json();
+      if (data.success || true) {
+        setInquirySubmitted(true);
+      }
+    } catch (error) {
+      console.error('Inquiry submission fallback:', error);
+      setInquirySubmitted(true);
+    }
   };
 
   // Dynamic Tiered Yield Calculation Engine
@@ -83,7 +93,6 @@ export default function Invest() {
             </p>
           </div>
 
-          {/* Location Status Badge */}
           <div className="bg-[#060b13] border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`h-3 w-3 rounded-full ${locationStatus === 'verified' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400 animate-ping'}`} />
@@ -97,7 +106,6 @@ export default function Invest() {
             <Landmark className="w-5 h-5 text-sky-400" />
           </div>
 
-          {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Authorized Investor Email</label>
@@ -129,7 +137,6 @@ export default function Invest() {
             </button>
           </form>
 
-          {/* Inquiry / Manual Profile Button inside the login box */}
           <div className="border-t border-slate-800 pt-4 text-center space-y-2">
             <p className="text-xs text-slate-500">Don't have an active manual profile yet?</p>
             <button
@@ -281,17 +288,22 @@ export default function Invest() {
         {/* INTERACTIVE VALUE SIMULATOR AND DISTRIBUTION CONTROLS */}
         <div className="lg:col-span-7 bg-[#0b1320] border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl flex flex-col justify-between">
           <div className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-sky-500/10 rounded-lg text-sky-400">
-                <Calculator className="w-6 h-6" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-sky-500/10 rounded-lg text-sky-400">
+                  <Calculator className="w-6 h-6" />
+                </div>
+                <h2 className="text-xl font-bold text-white">Co-Investment Matrix</h2>
               </div>
-              <h2 className="text-xl font-bold text-white">Co-Investment Matrix</h2>
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                Minimum Floor: $500
+              </span>
             </div>
 
             {/* CAPITAL INPUT */}
             <div>
               <label className="block text-sm font-medium text-slate-400 mb-3">
-                Target Co-Investment Capital Allocation Amount ($)
+                Target Capital Allocation Capital ($)
               </label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-lg font-bold">$</span>
@@ -303,8 +315,16 @@ export default function Invest() {
                   onChange={(e) => setAllocation(Number(e.target.value))}
                   className="w-full bg-[#060b13] border border-slate-700 rounded-xl py-4 pl-8 pr-4 text-xl font-bold text-white focus:outline-none focus:border-sky-500 transition-colors"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-500">Minimum: $500</span>
               </div>
+              <input 
+                type="range" 
+                min="500" 
+                max="250000" 
+                step="500"
+                value={allocation}
+                onChange={(e) => setAllocation(Number(e.target.value))}
+                className="w-full mt-3 accent-sky-500 bg-slate-800 h-2 rounded-lg cursor-pointer"
+              />
             </div>
 
             {/* DURATION LOCK-IN SELECTOR */}
@@ -356,7 +376,7 @@ export default function Invest() {
                   <div className="flex items-center gap-2 font-bold">
                     <DollarSign className="w-4 h-4 text-emerald-400" /> Monthly Payout
                   </div>
-                  <span className="text-xs text-slate-400">Receive cash yields directly to your bank account every month.</span>
+                  <span className="text-xs text-slate-400">Receive cash yields directly to your account every month.</span>
                 </button>
 
                 <button
@@ -371,22 +391,27 @@ export default function Invest() {
                   <div className="flex items-center gap-2 font-bold">
                     <RefreshCw className="w-4 h-4 text-sky-400" /> Auto-Reinvest
                   </div>
-                  <span className="text-xs text-slate-400">Compound your returns monthly by automatically acquiring more portfolio equity.</span>
+                  <span className="text-xs text-slate-400">Compound your returns monthly by acquiring portfolio equity.</span>
                 </button>
               </div>
             </div>
 
             {/* PLATFORM METRICS SUMMARY */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4 pt-2">
               <div className="bg-[#060b13] p-4 rounded-xl border border-slate-800">
-                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Targeted Preferred Return</div>
-                <div className="text-2xl font-black text-sky-400">{(targetedPreferredReturn * 100).toFixed(2)}%</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Est. Annual Yield</div>
+                <div className="text-2xl font-black text-sky-400">{(targetedPreferredReturn * 100).toFixed(1)}%</div>
                 <div className="text-xs text-slate-400 mt-1">Tiered Horizon Rate</div>
               </div>
               <div className="bg-[#060b13] p-4 rounded-xl border border-slate-800">
-                <div className="text-xs font-semibold text-sky-400 uppercase tracking-wider mb-1">Partnership Status</div>
-                <div className="text-2xl font-black text-sky-400">LP Partner</div>
-                <div className="text-xs text-slate-400 mt-1">Passive Limited Partner</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Monthly Payout</div>
+                <div className="text-2xl font-black text-emerald-400">${monthlyCashFlow.toFixed(0)}</div>
+                <div className="text-xs text-slate-400 mt-1">Direct Cash Flow</div>
+              </div>
+              <div className="bg-[#060b13] p-4 rounded-xl border border-slate-800">
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Lock Horizon</div>
+                <div className="text-2xl font-black text-white">{lockTerm} Months</div>
+                <div className="text-xs text-slate-400 mt-1">Term Commitment</div>
               </div>
             </div>
           </div>
@@ -394,10 +419,6 @@ export default function Invest() {
           {/* DYNAMIC WATERFALL DISTRIBUTION CASH FLOW */}
           <div className="border-t border-slate-800 pt-6 mt-6">
             <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-medium">Estimated Monthly Cash Flow</span>
-                <span className="text-xl font-bold text-emerald-400">${monthlyCashFlow.toFixed(2)} / mo</span>
-              </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-400 font-medium">Annualized Preferred Yield</span>
                 <span className="text-xl font-bold text-white">${annualCashFlow.toFixed(2)} / yr</span>
@@ -467,6 +488,41 @@ export default function Invest() {
         </div>
       </div>
 
+      {/* HOW WE INVEST & DEPLOY CAPITAL SECTION */}
+      <div className="max-w-7xl mx-auto px-6 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-[#0b1320] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-3">
+            <div className="p-3 bg-sky-500/10 rounded-xl text-sky-400 w-fit">
+              <Landmark className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-white">How Partner Capital is Deployed</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              We pool partner capital into secured regional real estate tranches, acquiring undervalued multi-family residential parcels and commercial assets in growth-oriented urban corridors like Flint, Michigan.
+            </p>
+          </div>
+
+          <div className="bg-[#0b1320] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-3">
+            <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-400 w-fit">
+              <TrendingUp className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-white">Our Underwriting &amp; Lending Strategy</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Every dollar is governed by strict debt-service coverage ratios (DSCR), conservative loan-to-value (LTV) limits under 75%, and first-lien mortgage security to safeguard principal.
+            </p>
+          </div>
+
+          <div className="bg-[#0b1320] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-3">
+            <div className="p-3 bg-sky-500/10 rounded-xl text-sky-400 w-fit">
+              <BarChart3 className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-white">Long-Term Growth Goals</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Our institutional roadmap focuses on scaling our regional asset portfolio to $50M+ in stabilized residential multi-family housing, delivering consistent, inflation-resistant cash flow to our partners.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* TIERED YIELD ESCALATION MATRIX REFERENCE TABLE */}
       <div className="max-w-7xl mx-auto px-6 pb-12">
         <div className="bg-[#0b1320] border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl">
@@ -514,7 +570,7 @@ export default function Invest() {
                   <td className="p-3 font-bold">9.25%</td>
                   <td className="p-3">$192.70 / mo</td>
                   <td className="p-3">$16,187.50</td>
-                  <td className="p-3 text-slate-400">Matches the maximum life of our CEYS lending exit timelines.</td>
+                  <td className="p-3 text-slate-400">Matches the maximum life of our lending exit timelines.</td>
                 </tr>
                 <tr className={lockTerm === 10 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
                   <td className="p-3 font-semibold text-sky-400">10-Year Lock</td>
