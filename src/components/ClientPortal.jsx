@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
+import { Building2, FileText, FolderKanban, ShieldCheck, UserCog } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function ClientPortal() {
+  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [applications, setApplications] = useState([]); // Simulated active applications
+  const [activeTab, setActiveTab] = useState('applications');
+
+  // Simulated state data containers
+  const [applications] = useState([]); 
+  const [activeLoans] = useState([]); 
+  const [jointVentures] = useState([]); 
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Simulate successful login
     if (email) setIsAuthenticated(true);
   };
 
@@ -18,7 +25,7 @@ export default function ClientPortal() {
         <div className="max-w-md w-full bg-[#0e1626] border border-slate-800 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold tracking-tight">Client Portal Login</h2>
-            <p className="text-slate-400 text-sm mt-2">Access your active commercial loan applications and underwriting status.</p>
+            <p className="text-slate-400 text-sm mt-2">Access your commercial loan applications, joint ventures, and asset portfolio.</p>
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
@@ -29,7 +36,7 @@ export default function ClientPortal() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="client@buickcityfinancial.com"
-                className="w-full bg-[#070b12] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500"
+                className="w-full bg-[#070b12] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-300"
               />
             </div>
             <div>
@@ -40,12 +47,12 @@ export default function ClientPortal() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-[#070b12] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500"
+                className="w-full bg-[#070b12] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-300"
               />
             </div>
             <button 
               type="submit"
-              className="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 rounded-lg transition-all shadow-lg shadow-cyan-500/20 mt-2"
+              className="w-full bg-sky-300 hover:bg-sky-200 text-slate-950 font-bold py-3 rounded-lg transition-all shadow-lg shadow-sky-300/10 mt-2 cursor-pointer"
             >
               Sign In to Portal
             </button>
@@ -56,28 +63,104 @@ export default function ClientPortal() {
   }
 
   return (
-    <div className="min-h-screen bg-[#070b12] text-white py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8 border-b border-slate-800 pb-6">
+    <div className="min-h-screen bg-[#040910] text-slate-100 py-12 px-6 pb-24">
+      <div className="max-w-6xl mx-auto space-y-8">
+        
+        {/* Header and Quick Navigation Tabs */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-6 gap-4">
           <div>
-            <span className="text-xs uppercase tracking-widest text-cyan-400 font-semibold">Client Portal Dashboard</span>
-            <h1 className="text-3xl font-extrabold mt-1">Active Loan Applications</h1>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-sky-300 font-semibold block mb-1">Client Portfolio Hub</span>
+            <h1 className="text-3xl font-extrabold text-white tracking-tight">Dashboard Overview</h1>
           </div>
+          <button 
+            onClick={() => navigate('/submit-deal')}
+            className="rounded-full bg-sky-300 hover:bg-sky-200 text-slate-950 font-semibold px-5 py-2.5 text-xs transition shadow-lg shadow-sky-300/10 cursor-pointer"
+          >
+            + Submit New Project
+          </button>
         </div>
 
-        {applications.length === 0 ? (
-          <div className="bg-[#0e1626] border border-slate-800/80 rounded-2xl p-16 text-center max-w-2xl mx-auto my-12">
-            <div className="w-16 h-16 bg-slate-800/50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-cyan-400">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        {/* Tab Navigation Bar */}
+        <div className="flex flex-wrap gap-2 border-b border-white/10 pb-4">
+          <button
+            onClick={() => setActiveTab('applications')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
+              activeTab === 'applications' ? 'bg-sky-500/10 text-sky-300 border border-sky-500/30' : 'text-slate-400 hover:text-white bg-white/5 border border-transparent'
+            }`}
+          >
+            <FileText className="h-3.5 w-3.5" /> Active Applications ({applications.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('loans')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
+              activeTab === 'loans' ? 'bg-sky-500/10 text-sky-300 border border-sky-500/30' : 'text-slate-400 hover:text-white bg-white/5 border border-transparent'
+            }`}
+          >
+            <Building2 className="h-3.5 w-3.5" /> Funded Loans ({activeLoans.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('jv')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
+              activeTab === 'jv' ? 'bg-sky-500/10 text-sky-300 border border-sky-500/30' : 'text-slate-400 hover:text-white bg-white/5 border border-transparent'
+            }`}
+          >
+            <FolderKanban className="h-3.5 w-3.5" /> Joint Ventures ({jointVentures.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('docs')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
+              activeTab === 'docs' ? 'bg-sky-500/10 text-sky-300 border border-sky-500/30' : 'text-slate-400 hover:text-white bg-white/5 border border-transparent'
+            }`}
+          >
+            <ShieldCheck className="h-3.5 w-3.5" /> Compliance & Docs
+          </button>
+        </div>
+
+        {/* Dynamic Tab Content Area */}
+        {activeTab === 'applications' && (
+          <div className="rounded-3xl border border-white/10 bg-[#07111f] p-12 text-center space-y-6 shadow-2xl max-w-3xl mx-auto">
+            <div className="h-16 w-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-300 mx-auto">
+              <FileText className="h-8 w-8" />
             </div>
-            <h3 className="text-xl font-bold mb-2">No Applications Found</h3>
-            <p className="text-slate-400 text-sm">You haven't submitted any commercial real estate deals yet. Launch the deal wizard to configure your first underwriting package.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4">
-            {/* Render active applications list here when available */}
+            <div className="space-y-2 max-w-md mx-auto">
+              <h3 className="text-lg font-bold text-white">No Active Applications</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                You currently have no pending underwriting packages under review. Submit a project to start tracking milestones.
+              </p>
+            </div>
+            <button
+              onClick={() => navigate('/submit-deal')}
+              className="rounded-full bg-sky-300 px-6 py-3 text-xs font-semibold text-slate-950 hover:bg-sky-200 transition shadow-lg shadow-sky-300/10 cursor-pointer"
+            >
+              Launch Deal Wizard →
+            </button>
           </div>
         )}
+
+        {activeTab === 'loans' && (
+          <div className="rounded-3xl border border-white/10 bg-[#07111f] p-12 text-center space-y-4 shadow-2xl max-w-3xl mx-auto">
+            <Building2 className="h-12 w-12 text-sky-300 mx-auto opacity-80" />
+            <h3 className="text-lg font-bold text-white">Funded Portfolios & Debt Instruments</h3>
+            <p className="text-xs text-slate-400">Active commercial mortgages, DSCR credit lines, and repayment ledgers will appear here upon closing.</p>
+          </div>
+        )}
+
+        {activeTab === 'jv' && (
+          <div className="rounded-3xl border border-white/10 bg-[#07111f] p-12 text-center space-y-4 shadow-2xl max-w-3xl mx-auto">
+            <FolderKanban className="h-12 w-12 text-sky-300 mx-auto opacity-80" />
+            <h3 className="text-lg font-bold text-white">Joint Venture Assets</h3>
+            <p className="text-xs text-slate-400">Track equity participation, capital contributions, and multi-family development performance metrics.</p>
+          </div>
+        )}
+
+        {activeTab === 'docs' && (
+          <div className="rounded-3xl border border-white/10 bg-[#07111f] p-12 text-center space-y-4 shadow-2xl max-w-3xl mx-auto">
+            <ShieldCheck className="h-12 w-12 text-sky-300 mx-auto opacity-80" />
+            <h3 className="text-lg font-bold text-white">Secure Document Repository</h3>
+            <p className="text-xs text-slate-400">Upload operating agreements, entity formation filings, tax records, and environmental site assessments.</p>
+          </div>
+        )}
+
       </div>
     </div>
   );
