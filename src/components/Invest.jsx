@@ -11,7 +11,7 @@ const getTieredYield = (year) => {
   return 0.0800; // Fallback
 };
 
-export default function Invest() {
+export default function Invest({ onNavigateToPortal }) {
   const [allocation, setAllocation] = useState(25000);
   const [lockTerm, setLockTerm] = useState(5);
   const [payoutMethod, setPayoutMethod] = useState('monthly');
@@ -53,7 +53,11 @@ export default function Invest() {
             <a href="#covenants" className="hover:text-white transition-colors">Protective Covenants</a>
             <a href="#faq" className="hover:text-white transition-colors">Partnership FAQ</a>
           </nav>
-          <button type="button" className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 font-bold py-2.5 px-5 rounded-xl text-sm transition-all">
+          <button 
+            type="button" 
+            onClick={onNavigateToPortal}
+            className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 font-bold py-2.5 px-5 rounded-xl text-sm transition-all shadow-md"
+          >
             Portal Login
           </button>
         </div>
@@ -208,7 +212,11 @@ export default function Invest() {
               </div>
             </div>
 
-            <button type="button" className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 group transition-all shadow-lg shadow-sky-500/10">
+            <button 
+              type="button" 
+              onClick={onNavigateToPortal}
+              className="w-full bg-sky-500 hover:bg-sky-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 group transition-all shadow-lg shadow-sky-500/10"
+            >
               Request Private Placement Prospectus <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
