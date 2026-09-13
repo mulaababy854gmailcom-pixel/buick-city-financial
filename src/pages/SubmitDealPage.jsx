@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, PlusCircle, ArrowRight, FileText, CheckCircle } from 'lucide-react';
+import { Building2, FileText } from 'lucide-react';
 
 export default function SubmitDealPage() {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
@@ -45,18 +45,9 @@ export default function SubmitDealPage() {
             <h2 className="text-xl font-bold text-white">Active Loan Applications</h2>
             <p className="text-xs text-slate-400">Track underwriting progress, decision statuses, and portfolio documentation.</p>
           </div>
-
-          {/* WORKING "Submit New Deal" Button */}
-          <button
-            type="button"
-            onClick={() => setIsWizardOpen(true)}
-            className="rounded-full bg-sky-300 px-5 py-2.5 text-xs font-semibold text-slate-950 transition hover:bg-sky-200 cursor-pointer flex items-center gap-2 shadow-lg shadow-sky-300/10"
-          >
-            <PlusCircle className="h-4 w-4" /> Submit New Deal
-          </button>
         </div>
 
-        {/* Conditional View: Show empty state or active list, or open the Wizard Modal / Form */}
+        {/* Conditional View: Show empty state or active list */}
         {submittedDeals.length === 0 ? (
           <div className="rounded-3xl border border-white/10 bg-[#07111f] p-12 text-center space-y-6 shadow-2xl">
             <div className="h-16 w-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-300 mx-auto">
@@ -65,17 +56,9 @@ export default function SubmitDealPage() {
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="text-lg font-bold text-white">No Applications Found</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                You haven't submitted any commercial real estate deals yet. Launch the wizard to submit your first property package.
+                You haven't submitted any commercial real estate deals yet. Launch the deal wizard to configure your first underwriting package.
               </p>
             </div>
-            {/* WORKING "Launch Deal Wizard" Button */}
-            <button
-              type="button"
-              onClick={() => setIsWizardOpen(true)}
-              className="rounded-full bg-sky-300 px-6 py-3 text-xs font-semibold text-slate-950 transition hover:bg-sky-200 cursor-pointer inline-flex items-center gap-2 shadow-lg shadow-sky-300/10"
-            >
-              Launch Deal Wizard →
-            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -98,7 +81,7 @@ export default function SubmitDealPage() {
         )}
       </div>
 
-      {/* Deal Wizard Modal Form */}
+      {/* Deal Wizard Modal Form (kept functional if triggered elsewhere) */}
       {isWizardOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-fadeIn">
           <div className="w-full max-w-lg rounded-3xl border border-white/10 bg-[#07111f] p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
