@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Building2, FileText, FolderKanban, ShieldCheck } from 'lucide-react';
+import { Building2, FileText, FolderKanban, ShieldCheck, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function ClientPortal() {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Institutional session persistence via browser session storage
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('bcf_portal_auth') === 'true';
+  });
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('applications');
@@ -16,7 +21,15 @@ export default function ClientPortal() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (email) setIsAuthenticated(true);
+    if (email) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('bcf_portal_auth', 'true');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('bcf_portal_auth');
   };
 
   if (!isAuthenticated) {
@@ -66,10 +79,18 @@ export default function ClientPortal() {
     <div className="min-h-screen bg-[#040910] text-slate-100 py-12 px-6 pb-24">
       <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Header Section */}
-        <div className="border-b border-white/10 pb-6">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-sky-300 font-semibold block mb-1">Client Portfolio Hub</span>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">Dashboard Overview</h1>
+        {/* Header Section with Secure Logout */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-6 gap-4">
+          <div>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-sky-300 font-semibold block mb-1">Client Portfolio Hub</span>
+            <h1 className="text-3xl font-extrabold text-white tracking-tight">Dashboard Overview</h1>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-300 hover:bg-white/10 transition cursor-pointer"
+          >
+            <LogOut className="h-3.5 w-3.5 text-slate-400" /> Sign Out
+          </button>
         </div>
 
         {/* Tab Navigation Bar */}
