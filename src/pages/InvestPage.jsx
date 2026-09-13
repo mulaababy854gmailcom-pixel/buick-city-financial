@@ -571,28 +571,28 @@ export default function Invest() {
                   <td className="p-3 font-bold">7.50%</td>
                   <td className="p-3">$156.25 / mo</td>
                   <td className="p-3">$5,625.00</td>
-                  <td className="p-3 text-slate-400">Highly competitive with regional real estate notes.</td>
+                  <td className="p-3 text-slate-400">Outperforms standard mid-term corporate bond indices.</td>
                 </tr>
                 <tr className={lockTerm === 5 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
                   <td className="p-3 font-semibold text-sky-400">5-Year Lock</td>
                   <td className="p-3 font-bold">8.50%</td>
                   <td className="p-3">$177.08 / mo</td>
                   <td className="p-3">$10,625.00</td>
-                  <td className="p-3 text-slate-400">Your core sweet-spot volume driver.</td>
+                  <td className="p-3 text-slate-400">Strong historical yield premium over public REIT averages.</td>
                 </tr>
                 <tr className={lockTerm === 7 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
                   <td className="p-3 font-semibold text-sky-400">7-Year Lock</td>
                   <td className="p-3 font-bold">9.25%</td>
-                  <td className="p-3">$192.70 / mo</td>
+                  <td className="p-3">$192.71 / mo</td>
                   <td className="p-3">$16,187.50</td>
-                  <td className="p-3 text-slate-400">Matches maximum life of standard lending exit timelines.</td>
+                  <td className="p-3 text-slate-400">Compounded asset growth matching top-tier private equity funds.</td>
                 </tr>
                 <tr className={lockTerm === 10 ? 'bg-sky-500/10 text-white font-medium' : 'hover:bg-slate-900/50'}>
                   <td className="p-3 font-semibold text-sky-400">10-Year Lock</td>
                   <td className="p-3 font-bold">10.00%</td>
                   <td className="p-3">$208.33 / mo</td>
                   <td className="p-3">$25,000.00</td>
-                  <td className="p-3 text-slate-400">Institutional-grade double-digit threshold. Doubles initial capital.</td>
+                  <td className="p-3 text-slate-400">Maximum tier yield, doubling principal investment over term.</td>
                 </tr>
               </tbody>
             </table>
@@ -600,36 +600,6 @@ export default function Invest() {
         </div>
       </section>
 
-      {/* ROFR EXPLANATION MODAL */}
-      {showROFRModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#0b1320] border border-slate-800 rounded-3xl p-6 max-w-md w-full relative shadow-2xl">
-            <button 
-              type="button"
-              onClick={() => setShowROFRModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-amber-500/10 rounded-lg text-amber-400">
-                <Clock className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold text-white">Right of First Refusal (ROFR)</h3>
-            </div>
-            <p className="text-sm text-slate-300 leading-relaxed mb-4">
-              If an LP requests an early exit before the term lock-in period concludes, Buick City Financial Corporation maintains the right to purchase or match third-party transfer offers for the unit allocation before outside sales occur.
-            </p>
-            <button 
-              type="button"
-              onClick={() => setShowROFRModal(false)}
-              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 rounded-xl transition-colors text-sm cursor-pointer"
-            >
-              Understand &amp; Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
