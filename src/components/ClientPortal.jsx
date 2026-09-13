@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, FileText, FolderKanban, ShieldCheck, UserCog } from 'lucide-react';
+import { Building2, FileText, FolderKanban, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function ClientPortal() {
@@ -66,18 +66,10 @@ export default function ClientPortal() {
     <div className="min-h-screen bg-[#040910] text-slate-100 py-12 px-6 pb-24">
       <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Header and Quick Navigation Tabs */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-6 gap-4">
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-sky-300 font-semibold block mb-1">Client Portfolio Hub</span>
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">Dashboard Overview</h1>
-          </div>
-          <button 
-            onClick={() => navigate('/submit-deal')}
-            className="rounded-full bg-sky-300 hover:bg-sky-200 text-slate-950 font-semibold px-5 py-2.5 text-xs transition shadow-lg shadow-sky-300/10 cursor-pointer"
-          >
-            + Submit New Project
-          </button>
+        {/* Header Section */}
+        <div className="border-b border-white/10 pb-6">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-sky-300 font-semibold block mb-1">Client Portfolio Hub</span>
+          <h1 className="text-3xl font-extrabold text-white tracking-tight">Dashboard Overview</h1>
         </div>
 
         {/* Tab Navigation Bar */}
@@ -125,15 +117,9 @@ export default function ClientPortal() {
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="text-lg font-bold text-white">No Active Applications</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                You currently have no pending underwriting packages under review. Submit a project to start tracking milestones.
+                You currently have no pending underwriting packages under review. Use the <span className="text-sky-300 font-semibold">Submit Project</span> button in the top navigation to start a new project submission.
               </p>
             </div>
-            <button
-              onClick={() => navigate('/submit-deal')}
-              className="rounded-full bg-sky-300 px-6 py-3 text-xs font-semibold text-slate-950 hover:bg-sky-200 transition shadow-lg shadow-sky-300/10 cursor-pointer"
-            >
-              Launch Deal Wizard →
-            </button>
           </div>
         )}
 
