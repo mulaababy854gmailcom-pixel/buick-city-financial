@@ -12,6 +12,7 @@ import AuthPage from "./pages/AuthPage";
 import InvestorDashboard from "./pages/InvestorDashboard";
 import ClientPortal from "./components/ClientPortal";
 import FinancingPage from "./pages/FinancingPage";
+import WorkspaceAccessPage from "./pages/WorkspaceAccessPage";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,9 +48,10 @@ function App() {
 
           {/* Desktop Links */}
           <nav className="hidden items-center gap-8 md:flex">
-            <Link className="text-sm text-slate-300 transition hover:text-white" to="/#research">
-              Our approach
+            <Link className="text-sm text-slate-300 transition hover:text-white" to="/#how-it-works">
+              How it works
             </Link>
+            <Link className="text-sm text-slate-300 transition hover:text-white" to="/login">Workspace sign in</Link>
             <Link className="text-sm text-slate-300 transition hover:text-white" to="/financing">
               BCFC financing
             </Link>
@@ -74,9 +76,10 @@ function App() {
         {/* Mobile Navigation Menu */}
         {menuOpen && (
           <nav className="flex flex-col gap-5 border-t border-white/10 px-6 py-5 md:hidden">
-            <Link to="/#research" onClick={closeMenu} className="text-slate-200">
-              Our approach
+            <Link to="/#how-it-works" onClick={closeMenu} className="text-slate-200">
+              How it works
             </Link>
+            <Link to="/login" onClick={closeMenu} className="text-slate-200">Workspace sign in</Link>
             <Link to="/financing" onClick={closeMenu} className="text-slate-200">
               BCFC financing
             </Link>
@@ -95,6 +98,8 @@ function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<WorkspaceAccessPage />} />
+          <Route path="/app" element={<WorkspaceAccessPage />} />
           <Route path="/financing" element={<FinancingPage />} />
           <Route path="/ground-lens" element={<Navigate to="/" replace />} />
           <Route 
@@ -128,3 +133,4 @@ function App() {
 }
 
 export default App;
+
