@@ -11,6 +11,7 @@ import SubmitDealPage from "./pages/SubmitDealPage";
 import AuthPage from "./pages/AuthPage";
 import InvestorDashboard from "./pages/InvestorDashboard";
 import ClientPortal from "./components/ClientPortal";
+import GroundLensPage from "./pages/GroundLensPage";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,6 +56,9 @@ function App() {
             <Link className="text-sm text-slate-300 transition hover:text-white" to="/joint-ventures">
               Joint Ventures
             </Link>
+            <Link className="text-sm text-slate-300 transition hover:text-white" to="/ground-lens">
+              Ground Lens
+            </Link>
             <Link className="text-sm text-slate-300 transition hover:text-white" to="/invest">
               Invest
             </Link>
@@ -91,6 +95,9 @@ function App() {
             <Link to="/joint-ventures" onClick={closeMenu} className="text-slate-200">
               Joint Ventures
             </Link>
+            <Link to="/ground-lens" onClick={closeMenu} className="text-slate-200">
+              Ground Lens
+            </Link>
             <Link to="/invest" onClick={closeMenu} className="text-slate-200">
               Invest
             </Link>
@@ -117,6 +124,7 @@ function App() {
             element={<ProductsPage onApplyForProduct={handleApplyForProduct} />} 
           />
           <Route path="/joint-ventures" element={<JointVenturesPage />} />
+          <Route path="/ground-lens" element={<GroundLensPage />} />
           <Route 
             path="/invest" 
             element={<InvestPage />} 

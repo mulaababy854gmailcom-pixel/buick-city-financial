@@ -92,6 +92,45 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Sister-company introduction */}
+      <section className="relative overflow-hidden bg-[#07111f]">
+        <div className="absolute -right-24 top-0 h-80 w-80 rounded-full bg-emerald-400/10 blur-3xl" />
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[1fr_0.8fr] lg:items-center lg:px-8 lg:py-24">
+          <div>
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/5 px-4 py-2 text-xs font-medium tracking-wide text-emerald-200">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              A BUICK CITY SISTER COMPANY
+            </div>
+            <h2 className="max-w-2xl text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
+              Better project decisions start with a clearer view of the property.
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300">
+              Ground Lens is developing a Flint-first property research workspace for parcel records, site context, and project scenario planning. It complements Buick City Financial’s focus on commercial project financing while serving a distinct research role.
+            </p>
+            <Link
+              to="/ground-lens"
+              className="mt-8 inline-flex items-center gap-2 rounded-full border border-emerald-300/40 px-5 py-3 text-sm font-semibold text-emerald-200 transition hover:border-emerald-200 hover:bg-emerald-200/10"
+            >
+              Meet Ground Lens <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-5 sm:p-7">
+            {[
+              ["01", "Parcel research", "Records and mapped context"],
+              ["02", "Site questions", "A place to organize follow-up"],
+              ["03", "Project scenarios", "Your assumptions, made visible"],
+              ["04", "Clearer handoffs", "Research beside financing"],
+            ].map(([number, title, detail]) => (
+              <div key={number} className="min-h-28 border-t border-emerald-300/25 pt-3">
+                <span className="text-xs font-semibold tracking-widest text-emerald-300">{number}</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{title}</h3>
+                <p className="mt-1 text-xs leading-5 text-slate-400">{detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
