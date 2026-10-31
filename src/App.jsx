@@ -1,6 +1,6 @@
-import { Building2, Menu, X } from "lucide-react";
+import { Compass, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
 // Page & Component Imports
 import Home from "./pages/Home";
@@ -11,7 +11,7 @@ import SubmitDealPage from "./pages/SubmitDealPage";
 import AuthPage from "./pages/AuthPage";
 import InvestorDashboard from "./pages/InvestorDashboard";
 import ClientPortal from "./components/ClientPortal";
-import GroundLensPage from "./pages/GroundLensPage";
+import FinancingPage from "./pages/FinancingPage";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -31,45 +31,33 @@ function App() {
       {/* Header / Global Navigation */}
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#07111f]/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
-          <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-sky-300/40 bg-sky-300/10">
-              <Building2 className="h-5 w-5 text-sky-300" />
+          <Link to="/" className="flex items-center gap-3" onClick={closeMenu} aria-label="Ground Lens home">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-emerald-300/40 bg-emerald-300/10">
+              <Compass className="h-5 w-5 text-emerald-300" />
             </div>
             <div>
               <p className="text-sm font-semibold tracking-[0.18em] text-white">
-                BUICK CITY
+                GROUND LENS
               </p>
-              <p className="text-[10px] tracking-[0.28em] text-sky-300">
-                FINANCIAL CORPORATION
+              <p className="text-[10px] tracking-[0.18em] text-emerald-300">
+                PROPERTY RESEARCH
               </p>
             </div>
           </Link>
 
           {/* Desktop Links */}
           <nav className="hidden items-center gap-8 md:flex">
-            <Link className="text-sm text-slate-300 transition hover:text-white" to="/">
-              Home
+            <Link className="text-sm text-slate-300 transition hover:text-white" to="/#research">
+              Our approach
             </Link>
-            <Link className="text-sm text-slate-300 transition hover:text-white" to="/products">
-              Products
-            </Link>
-            <Link className="text-sm text-slate-300 transition hover:text-white" to="/joint-ventures">
-              Joint Ventures
-            </Link>
-            <Link className="text-sm text-slate-300 transition hover:text-white" to="/ground-lens">
-              Ground Lens
-            </Link>
-            <Link className="text-sm text-slate-300 transition hover:text-white" to="/invest">
-              Invest
-            </Link>
-            <Link className="text-sm font-semibold text-sky-300 transition hover:text-white" to="/portal">
-              Client Portal
+            <Link className="text-sm text-slate-300 transition hover:text-white" to="/financing">
+              BCFC financing
             </Link>
             <Link
-              to="/submit-deal"
-              className="rounded-full bg-sky-300 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-sky-200"
+              to="/financing"
+              className="rounded-full bg-emerald-300 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-200"
             >
-              Submit Project
+              Financing inquiries
             </Link>
           </nav>
 
@@ -86,30 +74,18 @@ function App() {
         {/* Mobile Navigation Menu */}
         {menuOpen && (
           <nav className="flex flex-col gap-5 border-t border-white/10 px-6 py-5 md:hidden">
-            <Link to="/" onClick={closeMenu} className="text-slate-200">
-              Home
+            <Link to="/#research" onClick={closeMenu} className="text-slate-200">
+              Our approach
             </Link>
-            <Link to="/products" onClick={closeMenu} className="text-slate-200">
-              Products
-            </Link>
-            <Link to="/joint-ventures" onClick={closeMenu} className="text-slate-200">
-              Joint Ventures
-            </Link>
-            <Link to="/ground-lens" onClick={closeMenu} className="text-slate-200">
-              Ground Lens
-            </Link>
-            <Link to="/invest" onClick={closeMenu} className="text-slate-200">
-              Invest
-            </Link>
-            <Link to="/portal" onClick={closeMenu} className="font-semibold text-sky-300">
-              Client Portal
+            <Link to="/financing" onClick={closeMenu} className="text-slate-200">
+              BCFC financing
             </Link>
             <Link
-              to="/submit-deal"
+              to="/financing"
               onClick={closeMenu}
-              className="rounded-full bg-sky-300 px-5 py-3 text-center font-semibold text-slate-950"
+              className="rounded-full bg-emerald-300 px-5 py-3 text-center font-semibold text-slate-950"
             >
-              Submit Project
+              Financing inquiries
             </Link>
           </nav>
         )}
@@ -119,12 +95,13 @@ function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/financing" element={<FinancingPage />} />
+          <Route path="/ground-lens" element={<Navigate to="/" replace />} />
           <Route 
             path="/products" 
             element={<ProductsPage onApplyForProduct={handleApplyForProduct} />} 
           />
           <Route path="/joint-ventures" element={<JointVenturesPage />} />
-          <Route path="/ground-lens" element={<GroundLensPage />} />
           <Route 
             path="/invest" 
             element={<InvestPage />} 
@@ -142,10 +119,8 @@ function App() {
       {/* Global Footer */}
       <footer className="border-t border-white/10 px-6 py-10 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col gap-5 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 Buick City Financial Corporation. All rights reserved.</p>
-          <p>
-            Private Commercial B2B Lending Exclusively for Business Entities • Commercial Purpose Only • By Inquiry Only
-          </p>
+          <p>© {new Date().getFullYear()} Ground Lens · Flint, Michigan</p>
+          <p className="max-w-2xl">Ground Lens provides property research tools. Buick City Financial Corporation is an affiliated, separately operated B2B private lender. Financing inquiries are reviewed independently and are subject to underwriting, availability, documentation, and applicable law.</p>
         </div>
       </footer>
     </div>
