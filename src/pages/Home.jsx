@@ -114,9 +114,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:py-20 lg:grid-cols-[1fr_auto] lg:items-center lg:px-8">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]">A related business, a separate role</p><h2 className="mt-3 font-serif text-2xl font-medium text-[#142720] sm:text-3xl">Buick City Financial Corporation</h2><p className="mt-3 max-w-2xl text-base leading-7 text-[#53645c]">BCFC is an affiliated, separately operated B2B private lender. Its financing inquiries are reviewed independently from Ground Lens property research.</p></div>
-        <Link to="/financing" className="inline-flex min-h-12 items-center justify-center gap-2 border border-[#aeb8ae] px-5 py-3 font-semibold text-[#294739] transition hover:bg-white/60">Learn about financing <ScanSearch className="h-4 w-4" /></Link>
+      <section className="border-t border-[#d8d6ca] bg-[#e9e7dc]">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:py-20 lg:grid-cols-[0.8fr_1fr_auto] lg:items-center lg:px-8">
+          <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]">Research and capital, in conversation</p><h2 className="mt-3 font-serif text-2xl font-medium text-[#142720] sm:text-3xl">A connected perspective on property work.</h2></div>
+          <p className="max-w-2xl text-base leading-7 text-[#53645c]">Ground Lens helps organize parcel research and project planning. Its affiliated company, Buick City Financial Corporation, is a separately operated B2B private lender that reviews business-purpose financing inquiries independently.</p>
+          <Link to="/financing" className="inline-flex min-h-12 items-center justify-center gap-2 border border-[#aeb8ae] px-5 py-3 font-semibold text-[#294739] transition hover:bg-white/60">Meet BCFC <ScanSearch className="h-4 w-4" /></Link>
+        </div>
       </section>
     </main>
   );
