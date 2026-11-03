@@ -103,10 +103,11 @@ export default function GroundLensPage() {
           <h2 className="mt-3 text-2xl font-semibold text-white">Financing is a separate conversation.</h2>
           <p className="mt-2 text-sm text-slate-400">Any financing request is evaluated independently through Buick City Financial’s process.</p>
         </div>
-        <Link to="/products" className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:border-emerald-300/60 hover:bg-white/5">
-          View financing solutions <ArrowRight className="h-4 w-4" />
+        <Link to="/financing#pathways" className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:border-emerald-300/60 hover:bg-white/5">
+          Explore BCFC project paths <ArrowRight className="h-4 w-4" />
         </Link>
       </section>
     </main>
   );
 }
+
