@@ -1,4 +1,4 @@
-import { Compass, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
@@ -15,6 +15,8 @@ import FinancingPage from "./pages/FinancingPage";
 import WorkspaceAccessPage from "./pages/WorkspaceAccessPage";
 import PlatformPage from "./pages/PlatformPage";
 import FlintPage from "./pages/FlintPage";
+import BCFCInquiryPage from "./pages/BCFCInquiryPage";
+import GroundLensBrand from "./components/GroundLensBrand";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,17 +37,7 @@ function App() {
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#07111f]/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
           <Link to="/" className="flex items-center gap-3" onClick={closeMenu} aria-label="Ground Lens home">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-emerald-300/40 bg-emerald-300/10">
-              <Compass className="h-5 w-5 text-emerald-300" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold tracking-[0.18em] text-white">
-                GROUND LENS
-              </p>
-              <p className="text-[10px] tracking-[0.18em] text-emerald-300">
-                PROPERTY RESEARCH
-              </p>
-            </div>
+            <GroundLensBrand />
           </Link>
 
           {/* Desktop Links */}
@@ -88,6 +80,7 @@ function App() {
           <Route path="/login" element={<WorkspaceAccessPage />} />
           <Route path="/app" element={<WorkspaceAccessPage />} />
           <Route path="/financing" element={<FinancingPage />} />
+          <Route path="/financing/inquiry" element={<BCFCInquiryPage />} />
           <Route path="/ground-lens" element={<Navigate to="/" replace />} />
           <Route 
             path="/products" 
