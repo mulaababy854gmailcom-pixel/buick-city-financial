@@ -6,7 +6,6 @@ import { Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import InvestPage from "./pages/InvestPage";
 import JointVenturesPage from "./pages/JointVenturesPage";
-import ProductsPage from "./pages/ProductsPage";
 import SubmitDealPage from "./pages/SubmitDealPage";
 import AuthPage from "./pages/AuthPage";
 import InvestorDashboard from "./pages/InvestorDashboard";
@@ -82,10 +81,7 @@ function App() {
           <Route path="/financing" element={<FinancingPage />} />
           <Route path="/financing/inquiry" element={<BCFCInquiryPage />} />
           <Route path="/ground-lens" element={<Navigate to="/" replace />} />
-          <Route 
-            path="/products" 
-            element={<ProductsPage onApplyForProduct={handleApplyForProduct} />} 
-          />
+          <Route path="/products" element={<Navigate to="/financing#pathways" replace />} />
           <Route path="/joint-ventures" element={<JointVenturesPage />} />
           <Route 
             path="/invest" 
