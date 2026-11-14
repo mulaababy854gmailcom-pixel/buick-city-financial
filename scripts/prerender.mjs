@@ -5,7 +5,7 @@ const pages={
 '/':['Ground Lens | Property research, grounded in place','Property research, site context, and project planning for thoughtful local development.'],
 '/platform':['The platform | Ground Lens','Connect parcel records, property context, and project assumptions with Ground Lens.'],
 '/flint':['Why Flint | Ground Lens','Property research and thoughtful local development rooted in Flint, Michigan.'],
-'/financing':['BCFC | Business-purpose services · Ground Lens','BCFC is a Ground Lens subsidiary focused on business-purpose administration and processing. Residential mortgages: Coming Soon — pending licensing and approvals.'],
+'/financing':['BCFC | Business-purpose services · Ground Lens','BCFC is a Ground Lens subsidiary focused on business-purpose origination, administration, and processing. Residential mortgages: Coming Soon — pending licensing and approvals.'],
 '/financing/inquiry':['BCFC service inquiry | Ground Lens','Prepare a basic service inquiry for Darius@thegroundlens.com. No financial documents or loan applications.'],
 '/login':['Workspace access | Ground Lens','Access the Ground Lens private property research workspace.']
 };

@@ -117,7 +117,7 @@ export default function Home() {
       <section className="border-t border-[#d4ded4] bg-[#eaf0e3]">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:py-20 lg:grid-cols-[0.8fr_1fr_auto] lg:items-center lg:px-8">
           <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]">Research and administration, connected</p><h2 className="mt-3 font-sans text-2xl font-medium text-[#163d32] sm:text-3xl">A connected perspective on property work.</h2></div>
-          <p className="max-w-2xl text-base leading-7 text-[#53645c]">Ground Lens connects parcel research and project planning. Its subsidiary, Buick City Financial Corporation, is developing business-purpose transaction administration and third-party processing services. Residential mortgage lending and brokerage are Coming Soon — pending licensing and approvals.</p>
+          <p className="max-w-2xl text-base leading-7 text-[#53645c]">Ground Lens connects parcel research and project planning. Its subsidiary, Buick City Financial Corporation, welcomes business-purpose loan origination inquiries and provides transaction administration and third-party processing within the applicable lawful scope. Residential mortgage lending and brokerage are Coming Soon — pending licensing and approvals.</p>
           <Link to="/financing" className="inline-flex min-h-12 items-center justify-center gap-2 border border-[#aeb8ae] px-5 py-3 font-semibold text-[#294739] transition hover:bg-white/60">Meet BCFC <ScanSearch className="h-4 w-4" /></Link>
         </div>
       </section>
