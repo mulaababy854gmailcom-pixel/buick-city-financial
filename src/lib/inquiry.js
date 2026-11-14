@@ -1,0 +1,5 @@
+export const recipient = 'Darius@thegroundlens.com';
+const labels = {'seller-financing':'Seller-financing administration',processing:'Third-party loan processing',servicing:'Loan servicing & escrow — subject to readiness',residential:'Future residential products — Coming Soon'};
+const clean=value=>String(value||'').replace(/[\r\n\u0000-\u001f]/g,' ').trim();
+export function buildInquiry(form){return ['BCFC — SERVICE INQUIRY','Ground Lens subsidiary','', 'Name: '+clean(form.name), 'Email: '+clean(form.email), 'Company: '+(clean(form.organization)||'Not provided'), 'Service: '+(labels[form.service]||'General inquiry'), 'Role: '+clean(form.role), 'Property state: '+clean(form.state),'','General inquiry only. Not a loan application or commitment.','Residential services: Coming Soon — pending licensing and approvals.'].join('\n');}
+export function buildMailto(brief){return 'mailto:'+recipient+'?subject='+encodeURIComponent('BCFC service inquiry')+'&body='+encodeURIComponent(brief);}
