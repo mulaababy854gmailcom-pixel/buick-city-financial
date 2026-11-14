@@ -1,96 +1,17 @@
-import { ArrowRight, Check, Share2 } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-
-const fieldClass = "mt-2 min-h-12 w-full rounded-sm border border-[#c9c7b9] bg-[#fbfaf5] px-4 py-3 text-base text-[#1c2c26] outline-none transition placeholder:text-[#8a9188] focus:border-[#34775d] focus:ring-2 focus:ring-[#34775d]/15";
-
-function makeBrief(form) {
-  return [
-    "BUICK CITY FINANCIAL CORPORATION — PROJECT INQUIRY",
-    "",
-    `Contact: ${form.name}`,
-    `Business / organization: ${form.organization || "Not provided"}`,
-    `Email: ${form.email}`,
-    `Phone: ${form.phone || "Not provided"}`,
-    `Project location: ${form.location}`,
-    `Project type: ${form.type}`,
-    `Capital being explored: ${form.amount ? `$${Number(form.amount).toLocaleString()}` : "Not specified"}`,
-    "",
-    "PROJECT OVERVIEW",
-    form.overview,
-  ].join("\n");
-}
-
-export default function BCFCInquiryPage() {
-  const [form, setForm] = useState({ name: "", organization: "", email: "", phone: "", location: "", type: "", amount: "", overview: "" });
-  const [brief, setBrief] = useState("");
-  const [copied, setCopied] = useState(false);
-  const update = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
-
-  function prepare(event) {
-    event.preventDefault();
-    setBrief(makeBrief(form));
-    setCopied(false);
-  }
-
-  async function shareBrief() {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: "BCFC project inquiry", text: brief });
-        return;
-      } catch (error) {
-        if (error?.name === "AbortError") return;
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(brief);
-      setCopied(true);
-    } catch {
-      setCopied(false);
-    }
-  }
-
-  return <main className="min-h-[70vh] bg-[#f3f1e8] text-[#1c2c26]">
-    <section className="border-b border-[#d8d6ca] bg-[#ebe9df]">
-      <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16 lg:px-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8a6234]">Buick City Financial · First conversation</p>
-        <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_0.62fr] lg:items-end">
-          <h1 className="max-w-3xl font-serif text-4xl font-medium leading-[1.06] tracking-[-0.04em] text-[#142720] sm:text-5xl">Tell us what you’re working on.</h1>
-          <p className="max-w-xl text-base leading-7 text-[#53645c]">A useful first note is simple: where the project is, what you’re planning, and what capital question you’re trying to answer. You can add supporting records later.</p>
-        </div>
-      </div>
-    </section>
-
-    <section className="mx-auto grid max-w-7xl gap-10 px-6 py-10 sm:py-14 lg:grid-cols-[1fr_0.55fr] lg:gap-16 lg:px-8">
-      <div className="border border-[#d0d1c5] bg-[#f8f7f1] p-5 sm:p-8">
-        {brief ? <div aria-live="polite">
-          <div className="flex items-start gap-3"><span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#dce9df] text-[#27674f]"><Check className="h-4 w-4" /></span><div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#34775d]">Inquiry summary ready</p><h2 className="mt-2 font-serif text-2xl font-medium text-[#142720]">Choose how to share it.</h2></div></div>
-          <pre className="mt-6 max-h-[30rem] overflow-auto whitespace-pre-wrap break-words border-y border-[#d8d6ca] py-5 font-sans text-sm leading-6 text-[#53645c]">{brief}</pre>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row"><button type="button" onClick={shareBrief} className="inline-flex min-h-12 items-center justify-center gap-2 bg-[#27674f] px-5 py-3 font-semibold text-white hover:bg-[#1e543f]"><Share2 className="h-4 w-4" />{copied ? "Copied to clipboard" : "Share or copy summary"}</button><button type="button" onClick={() => { setBrief(""); setCopied(false); }} className="min-h-12 border border-[#aeb8ae] px-5 py-3 font-semibold text-[#294739] hover:bg-white/60">Edit details</button></div>
-          <p className="mt-4 text-sm leading-6 text-[#68766e]">Nothing is sent or stored by Ground Lens from this page. On supported phones, the share sheet lets you choose where to send the summary; otherwise, the button copies it.</p>
-        </div> : <form onSubmit={prepare} className="space-y-5">
-          <div className="border-b border-[#d8d6ca] pb-5"><p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#34775d]">Project inquiry</p><h2 className="mt-2 font-serif text-2xl font-medium text-[#142720]">A little context to begin</h2><p className="mt-2 text-sm leading-6 text-[#68766e]">Required fields are marked with an asterisk. This creates a shareable summary on your device.</p></div>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <label className="block text-sm font-medium text-[#294739]">Your name *<input className={fieldClass} required autoComplete="name" value={form.name} onChange={update("name")} placeholder="Name" /></label>
-            <label className="block text-sm font-medium text-[#294739]">Business or organization<input className={fieldClass} autoComplete="organization" value={form.organization} onChange={update("organization")} placeholder="Company (optional)" /></label>
-            <label className="block text-sm font-medium text-[#294739]">Email *<input className={fieldClass} required type="email" autoComplete="email" value={form.email} onChange={update("email")} placeholder="you@company.com" /></label>
-            <label className="block text-sm font-medium text-[#294739]">Phone<input className={fieldClass} type="tel" autoComplete="tel" value={form.phone} onChange={update("phone")} placeholder="Optional" /></label>
-            <label className="block text-sm font-medium text-[#294739]">Project location *<input className={fieldClass} required autoComplete="street-address" value={form.location} onChange={update("location")} placeholder="City, state, or project address" /></label>
-            <label className="block text-sm font-medium text-[#294739]">Project type *<select className={fieldClass} required value={form.type} onChange={update("type")}><option value="" disabled>Select a project type</option><option>Acquisition</option><option>Renovation or reposition</option><option>Ground-up development</option><option>Rental portfolio</option><option>Other business-purpose project</option></select></label>
-            <label className="block text-sm font-medium text-[#294739] sm:col-span-2">Approximate capital need <input className={fieldClass} type="number" min="0" step="1000" inputMode="numeric" value={form.amount} onChange={update("amount")} placeholder="Optional" /></label>
-            <label className="block text-sm font-medium text-[#294739] sm:col-span-2">What are you planning? *<textarea className={`${fieldClass} min-h-32 resize-y`} required value={form.overview} onChange={update("overview")} placeholder="Briefly describe the property, the project stage, and what you’re trying to finance." /></label>
-          </div>
-          <button type="submit" className="inline-flex min-h-12 w-full items-center justify-center gap-2 bg-[#27674f] px-5 py-3 font-semibold text-white hover:bg-[#1e543f] sm:w-auto">Prepare project summary <ArrowRight className="h-4 w-4" /></button>
-          <p className="text-sm leading-6 text-[#68766e]">Please don’t include Social Security numbers, bank details, or other highly sensitive information. This page does not submit an application or provide a credit decision.</p>
-        </form>}
-      </div>
-
-      <aside className="space-y-6 lg:pt-3">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8a6234]">What happens next</p><h2 className="mt-3 font-serif text-2xl font-medium text-[#142720]">Start with a conversation, not a packet.</h2><p className="mt-3 text-base leading-7 text-[#53645c]">Prepare a concise project summary, then choose where to share it. BCFC reviews financing inquiries separately from Ground Lens. A project inquiry is not an application, offer, approval, or commitment to lend.</p></div>
-        <div className="border-l-2 border-[#b18a58] pl-5"><p className="font-semibold text-[#294739]">One clear starting point</p><p className="mt-2 text-sm leading-6 text-[#68766e]">Location, project plan, timing, and the capital question are enough to frame an initial discussion.</p></div>
-        <Link to="/financing" className="inline-flex min-h-11 items-center gap-2 font-semibold text-[#27674f] hover:text-[#1e543f]">Back to BCFC financing <ArrowRight className="h-4 w-4" /></Link>
-      </aside>
-    </section>
-  </main>;
-}
-
+import { ArrowUpRight, Download, Copy, Check } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { services, comingSoon } from '../components/BCFCContent';
+import { buildInquiry, buildMailto, recipient } from '../lib/inquiry';
+import '../bcfc.css';
+export default function BCFCInquiryPage(){
+const [params]=useSearchParams(); const initial=params.get('service')||'';
+const [form,setForm]=useState({name:'',organization:'',email:'',service:services.some(s=>s.id===initial)||initial==='residential'?initial:'',role:'',state:'',consent:false});
+const [brief,setBrief]=useState('');const [status,setStatus]=useState('');const heading=useRef(null);
+const update=key=>event=>setForm(current=>({...current,[key]:event.target.type==='checkbox'?event.target.checked:event.target.value}));
+useEffect(()=>{document.title='BCFC service inquiry | Ground Lens';},[]);
+function prepare(event){event.preventDefault();setBrief(buildInquiry(form));setStatus('');}
+useEffect(()=>{if(brief)heading.current?.focus();},[brief]);
+async function copy(){try{await navigator.clipboard.writeText(brief);setStatus('Inquiry copied. Paste it into an email to '+recipient+'. Nothing has been sent yet.');}catch{setStatus('Copy is unavailable. Select the summary text, or download it instead.');}}
+function download(){const url=URL.createObjectURL(new Blob([brief],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='BCFC-service-inquiry.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setStatus('Summary downloaded to your device. Nothing has been sent.');}
+return <main className="bcfc-page" id="main-content" tabIndex={-1}><section className="gl-container bcfc-section bcfc-form-hero"><Link className="bcfc-back" to="/financing">GROUND LENS / BCFC / SERVICE INQUIRY</Link><p className="gl-eyebrow">A simple first contact</p><h1>Let’s start<br/>with the essentials.</h1><p className="bcfc-hero-copy">A few details to frame the right conversation. No financial documents. No loan application.</p></section><section className="gl-container bcfc-section bcfc-form-layout"><aside><h2>Less paperwork.<br/>More clarity.</h2><p>This form prepares a short inquiry on your device. You can open it in your email app and send it to <a className="bcfc-inline-link" href={'mailto:'+recipient}>{recipient}</a>.</p><p>Nothing is sent automatically. You’ll review and send the email yourself.</p><p><strong>Please keep sensitive information out.</strong><br/>No Social Security numbers, bank or credit information, identification, financial documents, account numbers, or wire instructions.</p><p className="bcfc-small">Residential mortgage lending and brokerage:<br/><strong>{comingSoon}</strong>. Selecting this interest does not begin an application or reserve a product.</p><Link className="bcfc-email" to="/financing">Back to BCFC services</Link></aside><div className="bcfc-form">{brief?<div><Check size={25} aria-hidden="true"/><h2 ref={heading} tabIndex={-1}>Your inquiry is prepared.</h2><p className="bcfc-form-intro"><strong>It has not been sent.</strong> Open your email app, review the message, and send it to {recipient}.</p><pre className="bcfc-summary">{brief}</pre><div className="bcfc-actions"><a className="gl-button" href={buildMailto(brief)}>Open email to Darius <ArrowUpRight size={17} aria-hidden="true"/></a><button className="gl-button gl-button-secondary" onClick={()=>{setBrief('');setStatus('');}}>Edit details</button></div><div className="bcfc-actions"><button className="bcfc-text-link" onClick={copy}><Copy size={15} aria-hidden="true"/>Copy summary</button><button className="bcfc-text-link" onClick={download}><Download size={15} aria-hidden="true"/>Download summary</button></div><p className="bcfc-small">If no email app opens, copy or download the summary and email it directly. Opening your email app does not confirm delivery.</p><p className="bcfc-form-status" role="status">{status}</p></div>:<form onSubmit={prepare}><h2>Service inquiry</h2><p className="bcfc-form-intro">All fields are required unless marked optional.</p><div className="bcfc-form-row"><label>Your name<input name="name" autoComplete="name" required maxLength={100} value={form.name} onChange={update('name')}/></label><label>Email address<input name="email" autoComplete="email" type="email" required maxLength={254} value={form.email} onChange={update('email')}/></label></div><label>Company <span>(optional)</span><input name="organization" autoComplete="organization" maxLength={120} value={form.organization} onChange={update('organization')}/></label><label>Service of interest<select name="service" required value={form.service} onChange={update('service')}><option value="">Select a service</option>{services.map(s=><option key={s.id} value={s.id}>{s.title}</option>)}<option value="residential">Future residential products — Coming Soon</option></select></label><div className="bcfc-form-row"><label>Your role<select name="role" required value={form.role} onChange={update('role')}><option value="">Select your role</option>{['Investor / buyer','Property seller','Lender / loan owner','Professional partner','Future homebuyer / homeowner'].map(x=><option key={x}>{x}</option>)}</select></label><label>Property state<select name="state" required value={form.state} onChange={update('state')}><option value="">Select a state</option>{'AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY'.split(' ').map(x=><option key={x}>{x}</option>)}<option>Not yet determined</option></select></label></div><label className="bcfc-checkbox"><input name="consent" type="checkbox" required checked={form.consent} onChange={update('consent')}/><span>I understand that I must send the prepared email myself, and I authorize Ground Lens / BCFC to use the details I send to respond to this inquiry.</span></label><button type="submit" className="gl-button">Prepare inquiry <ArrowUpRight size={17} aria-hidden="true"/></button><p className="bcfc-small bcfc-form-intro">No loan application or service engagement is created.</p></form>}<div className="bcfc-privacy"><h3>How your details are handled</h3><p>The form keeps details in page memory only. It does not upload them, store them in your browser, or enroll you in marketing. Refreshing or closing this page clears the form. Copies and downloads you create remain on your device.</p><p>If you choose to email the summary, your email provider processes the message and Ground Lens / BCFC receives it in its inbox to assess fit and respond. Avoid sensitive information. For privacy or deletion requests, email <a className="bcfc-inline-link" href={'mailto:'+recipient}>{recipient}</a>; applicable recordkeeping obligations may limit deletion.</p></div></div></section></main>}

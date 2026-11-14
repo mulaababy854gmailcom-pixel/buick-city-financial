@@ -4,10 +4,7 @@ import { BrowserRouter } from 'react-router-dom' // 1. Import BrowserRouter
 import App from './App.jsx'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter> {/* 2. Open tag here */}
-      <App />
-    </BrowserRouter> {/* 3. Close tag here */}
-  </React.StrictMode>,
-)
+const root = document.getElementById('root');
+const app = <React.StrictMode><BrowserRouter><App /></BrowserRouter></React.StrictMode>;
+if(root.dataset.prerender) ReactDOM.hydrateRoot(root, app);
+else ReactDOM.createRoot(root).render(app);

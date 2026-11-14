@@ -70,30 +70,30 @@ function ParcelSketch() {
 
 export default function Home() {
   return (
-    <main className="bg-[#f3f1e8] text-[#1c2c26]">
-      <section className="relative overflow-hidden border-b border-[#d8d6ca]">
+    <main className="bg-[#f7f8f2] text-[#1c2c26]">
+      <section className="relative overflow-hidden border-b border-[#d4ded4]">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-16 pt-14 sm:gap-16 sm:pb-24 sm:pt-20 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-24">
           <div className="relative z-10">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]"><Compass className="h-4 w-4" /> Built from property work in Flint</p>
-            <h1 className="mt-6 max-w-2xl font-serif text-[2.75rem] font-medium leading-[1.05] tracking-[-0.045em] text-[#142720] sm:text-6xl lg:text-[4.25rem]">Good development starts with better questions.</h1>
+            <h1 className="mt-6 max-w-2xl font-sans text-[2.75rem] font-medium leading-[1.05] tracking-[-0.045em] text-[#163d32] sm:text-6xl lg:text-[4.25rem]">Good development starts with better questions.</h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-[#53645c] sm:text-xl sm:leading-9">We’re building Ground Lens while working through property decisions of our own in Flint. It brings parcel records, site context, project costs, and operating assumptions into the same conversation.</p>
             <p className="mt-4 max-w-xl text-base leading-7 text-[#53645c]">The point is simple: spend less time chasing disconnected information, and more time figuring out what a site can realistically support.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link to="/login" className="inline-flex min-h-14 items-center justify-center gap-3 bg-[#27674f] px-6 py-3.5 text-base font-semibold text-white transition hover:bg-[#1e543f]">Open the private workspace <ArrowRight className="h-4 w-4" /></Link>
+              <Link to="/login" className="inline-flex min-h-14 items-center justify-center gap-3 bg-[#24654b] px-6 py-3.5 text-base font-semibold text-white transition hover:bg-[#1e543f]">Open the private workspace <ArrowRight className="h-4 w-4" /></Link>
               <a href="#our-approach" className="inline-flex min-h-14 items-center justify-center gap-2 border border-[#aeb8ae] px-6 py-3.5 text-base font-semibold text-[#294739] transition hover:bg-white/60">How we approach a site <ArrowDownRight className="h-4 w-4" /></a>
             </div>
             <p className="mt-5 max-w-lg text-sm leading-6 text-[#737c73]">A private development project today. A practical research workspace shaped by real decisions, questions, and results.</p>
           </div>
           <ParcelSketch />
         </div>
-        <div className="mx-auto max-w-7xl px-6 pb-8 lg:px-8"><div className="flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-[#d8d6ca] pt-5 text-xs font-medium uppercase tracking-[0.14em] text-[#66766d]"><span>Flint first</span><span>Parcel to project</span><span>Built around decisions that matter</span></div></div>
+        <div className="mx-auto max-w-7xl px-6 pb-8 lg:px-8"><div className="flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-[#d4ded4] pt-5 text-xs font-medium uppercase tracking-[0.14em] text-[#66766d]"><span>Flint first</span><span>Parcel to project</span><span>Built around decisions that matter</span></div></div>
       </section>
 
       <section id="our-approach" className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.72fr_1fr] lg:gap-20">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]">A working tool, built from the ground up</p>
-            <h2 className="mt-4 max-w-md font-serif text-3xl font-medium leading-tight tracking-[-0.03em] text-[#142720] sm:text-4xl">We started with the questions we had to answer ourselves.</h2>
+            <h2 className="mt-4 max-w-md font-sans text-3xl font-medium leading-tight tracking-[-0.03em] text-[#163d32] sm:text-4xl">We started with the questions we had to answer ourselves.</h2>
             <div className="mt-7 flex items-center gap-3 text-sm text-[#68766e]"><Ruler className="h-4 w-4 text-[#34775d]" /><span>From a lot on a map to a project worth pursuing.</span></div>
           </div>
           <div className="space-y-5 text-base leading-8 text-[#53645c]">
@@ -104,20 +104,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="how-it-works" className="border-y border-[#d8d6ca] bg-[#ebe9df]">
+      <section id="how-it-works" className="border-y border-[#d4ded4] bg-[#eaf0e3]">
         <div className="mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:px-8">
-          <div className="mb-10 max-w-2xl"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]">A more connected way to think through a site</p><h2 className="mt-4 font-serif text-3xl font-medium tracking-[-0.03em] text-[#142720] sm:text-4xl">One decision leads to the next.</h2><p className="mt-4 text-base leading-7 text-[#5d6c63]">Ground Lens organizes the early work so you can see what you know, what you’re assuming, and what to investigate next.</p></div>
+          <div className="mb-10 max-w-2xl"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]">A more connected way to think through a site</p><h2 className="mt-4 font-sans text-3xl font-medium tracking-[-0.03em] text-[#163d32] sm:text-4xl">One decision leads to the next.</h2><p className="mt-4 text-base leading-7 text-[#5d6c63]">Ground Lens organizes the early work so you can see what you know, what you’re assuming, and what to investigate next.</p></div>
           <div className="grid gap-px border border-[#d0d1c5] bg-[#d0d1c5] md:grid-cols-3">
-            {steps.map(({ number, icon: Icon, title, copy }) => <article key={number} className="bg-[#f3f1e8] p-6 sm:p-8"><div className="flex items-center justify-between"><span className="font-mono text-xs tracking-[0.14em] text-[#718078]">{number}</span><Icon className="h-5 w-5 text-[#34775d]" /></div><h3 className="mt-8 font-serif text-2xl font-medium text-[#1d3329]">{title}</h3><p className="mt-3 text-base leading-7 text-[#5e6d64]">{copy}</p></article>)}
+            {steps.map(({ number, icon: Icon, title, copy }) => <article key={number} className="bg-[#f7f8f2] p-6 sm:p-8"><div className="flex items-center justify-between"><span className="font-mono text-xs tracking-[0.14em] text-[#718078]">{number}</span><Icon className="h-5 w-5 text-[#34775d]" /></div><h3 className="mt-8 font-sans text-2xl font-medium text-[#1d3329]">{title}</h3><p className="mt-3 text-base leading-7 text-[#5e6d64]">{copy}</p></article>)}
           </div>
-          <div className="mt-8 flex flex-col gap-4 border-l-2 border-[#78a88f] pl-5 text-sm leading-6 text-[#657269] sm:flex-row sm:items-center sm:justify-between"><p className="max-w-3xl">Parcel records and mapped context help frame the work. Project budgets and scenario results are planning tools built from sourced information and editable assumptions; they still need due diligence.</p><Link to="/login" className="inline-flex shrink-0 items-center gap-2 font-semibold text-[#27674f] hover:text-[#1e543f]">Explore the workspace <ArrowRight className="h-4 w-4" /></Link></div>
+          <div className="mt-8 flex flex-col gap-4 border-l-2 border-[#78a88f] pl-5 text-sm leading-6 text-[#657269] sm:flex-row sm:items-center sm:justify-between"><p className="max-w-3xl">Parcel records and mapped context help frame the work. Project budgets and scenario results are planning tools built from sourced information and editable assumptions; they still need due diligence.</p><Link to="/login" className="inline-flex shrink-0 items-center gap-2 font-semibold text-[#24654b] hover:text-[#1e543f]">Explore the workspace <ArrowRight className="h-4 w-4" /></Link></div>
         </div>
       </section>
 
-      <section className="border-t border-[#d8d6ca] bg-[#e9e7dc]">
+      <section className="border-t border-[#d4ded4] bg-[#eaf0e3]">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:py-20 lg:grid-cols-[0.8fr_1fr_auto] lg:items-center lg:px-8">
-          <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]">Research and capital, in conversation</p><h2 className="mt-3 font-serif text-2xl font-medium text-[#142720] sm:text-3xl">A connected perspective on property work.</h2></div>
-          <p className="max-w-2xl text-base leading-7 text-[#53645c]">Ground Lens helps organize parcel research and project planning. Its affiliated company, Buick City Financial Corporation, is a separately operated B2B private lender that reviews business-purpose financing inquiries independently.</p>
+          <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#34775d]">Research and administration, connected</p><h2 className="mt-3 font-sans text-2xl font-medium text-[#163d32] sm:text-3xl">A connected perspective on property work.</h2></div>
+          <p className="max-w-2xl text-base leading-7 text-[#53645c]">Ground Lens connects parcel research and project planning. Its subsidiary, Buick City Financial Corporation, is developing business-purpose transaction administration and third-party processing services. Residential mortgage lending and brokerage are Coming Soon — pending licensing and approvals.</p>
           <Link to="/financing" className="inline-flex min-h-12 items-center justify-center gap-2 border border-[#aeb8ae] px-5 py-3 font-semibold text-[#294739] transition hover:bg-white/60">Meet BCFC <ScanSearch className="h-4 w-4" /></Link>
         </div>
       </section>
