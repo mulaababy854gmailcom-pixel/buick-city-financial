@@ -2,7 +2,39 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/app",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ground-lens",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/products",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/joint-ventures",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/invest",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/submit-deal",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/portal",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/investor-dashboard",
       "destination": "/index.html"
     }
   ],
@@ -28,5 +60,6 @@
         }
       ]
     }
-  ]
+  ],
+  "cleanUrls": true
 }
