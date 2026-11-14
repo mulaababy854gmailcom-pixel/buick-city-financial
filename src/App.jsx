@@ -11,6 +11,9 @@ import AuthPage from "./pages/AuthPage";
 import InvestorDashboard from "./pages/InvestorDashboard";
 import ClientPortal from "./components/ClientPortal";
 import FinancingPage from "./pages/FinancingPage";
+import BCFCOriginationPage from "./pages/BCFCOriginationPage";
+import BCFCServicesPage from "./pages/BCFCServicesPage";
+import BCFCResidentialPage from "./pages/BCFCResidentialPage";
 import WorkspaceAccessPage from "./pages/WorkspaceAccessPage";
 import PlatformPage from "./pages/PlatformPage";
 import FlintPage from "./pages/FlintPage";
@@ -20,7 +23,7 @@ import GroundLensBrand from "./components/GroundLensBrand";
 function App() {
   const location = useLocation();
   useEffect(() => {
-    const titles = {'/':'Ground Lens | Property research, grounded in place','/platform':'The platform | Ground Lens','/flint':'Why Flint | Ground Lens','/financing':'BCFC | Business-purpose services · Ground Lens','/financing/inquiry':'BCFC service inquiry | Ground Lens'};
+    const titles = {'/':'Ground Lens | Property research, grounded in place','/platform':'The platform | Ground Lens','/flint':'Why Flint | Ground Lens','/financing':'BCFC | Business-purpose services · Ground Lens','/financing/inquiry':'BCFC service inquiry | Ground Lens','/financing/origination':'Business-purpose origination | BCFC · Ground Lens','/financing/services':'Administration, processing & servicing | BCFC · Ground Lens','/financing/residential':'Residential mortgages — Coming Soon | BCFC · Ground Lens'};
     document.title = titles[location.pathname] || 'Ground Lens';
     const description = document.querySelector('meta[name="description"]');
     if(description) description.content = location.pathname.startsWith('/financing') ? 'BCFC, a Ground Lens subsidiary. Business-purpose origination, administration, and processing. Residential mortgages: Coming Soon — pending licensing and approvals.' : 'Ground Lens connects property records, site context, and project assumptions for thoughtful local development.';
@@ -93,9 +96,12 @@ function App() {
           <Route path="/login" element={<WorkspaceAccessPage />} />
           <Route path="/app" element={<WorkspaceAccessPage />} />
           <Route path="/financing" element={<FinancingPage />} />
+          <Route path="/financing/origination" element={<BCFCOriginationPage />} />
+          <Route path="/financing/services" element={<BCFCServicesPage />} />
+          <Route path="/financing/residential" element={<BCFCResidentialPage />} />
           <Route path="/financing/inquiry" element={<BCFCInquiryPage />} />
           <Route path="/ground-lens" element={<Navigate to="/" replace />} />
-          <Route path="/products" element={<Navigate to="/financing#services" replace />} />
+          <Route path="/products" element={<Navigate to="/financing/origination" replace />} />
           <Route path="/joint-ventures" element={<JointVenturesPage />} />
           <Route 
             path="/invest" 
