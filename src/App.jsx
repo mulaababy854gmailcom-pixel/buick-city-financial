@@ -26,7 +26,7 @@ function App() {
     const titles = {'/':'Ground Lens | Property research, grounded in place','/platform':'The platform | Ground Lens','/flint':'Why Flint | Ground Lens','/financing':'BCFC | Business-purpose services · Ground Lens','/financing/inquiry':'BCFC service inquiry | Ground Lens','/financing/origination':'Business-purpose origination | BCFC · Ground Lens','/financing/services':'Administration, processing & servicing | BCFC · Ground Lens','/financing/residential':'Residential mortgages — Coming Soon | BCFC · Ground Lens'};
     document.title = titles[location.pathname] || 'Ground Lens';
     const description = document.querySelector('meta[name="description"]');
-    if(description) description.content = location.pathname.startsWith('/financing') ? 'BCFC, a Ground Lens subsidiary. Business-purpose origination, administration, and processing. Residential mortgages: Coming Soon — pending licensing and approvals.' : 'Ground Lens connects property records, site context, and project assumptions for thoughtful local development.';
+    if(description) description.content = location.pathname.startsWith('/financing') ? 'BCFC, a Ground Lens subsidiary. Business-purpose origination, administration, and processing. Residential mortgages: Coming Soon.' : 'Ground Lens connects property records, site context, and project assumptions for thoughtful local development.';
     const canonical = document.querySelector('link[rel="canonical"]') || document.head.appendChild(document.createElement('link'));
     canonical.rel = 'canonical'; canonical.href = 'https://thegroundlens.com' + location.pathname;
     const frame = requestAnimationFrame(() => {
@@ -122,7 +122,7 @@ function App() {
       <footer className="gl-footer px-6 py-10 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-8 sm:grid-cols-[1fr_1.2fr] sm:items-end">
           <div><p className="text-sm font-semibold tracking-[0.16em] text-white">GROUND LENS</p><p className="mt-2 text-sm text-slate-400">Property research rooted in Flint.</p><p className="mt-5 text-xs text-slate-600">© {new Date().getFullYear()} Ground Lens</p></div>
-          <p className="max-w-2xl text-xs leading-6 text-slate-500">Buick City Financial Corporation is a Ground Lens subsidiary. Business-purpose origination, administration, and processing are subject to applicable requirements and readiness. Residential mortgage lending and brokerage: Coming Soon — pending licensing and approvals. No active mortgage license, rates, underwriting, funding, or product availability is represented.</p>
+          <p className="max-w-2xl text-xs leading-6 text-slate-500">Buick City Financial Corporation is a Ground Lens subsidiary. Business-purpose origination, administration, and processing are subject to applicable requirements and readiness. Residential mortgage lending and brokerage: Coming Soon. No active mortgage license, rates, underwriting, funding, or product availability is represented.</p>
         </div>
       </footer>
     </div>
