@@ -64,7 +64,7 @@ async function passwordMatches(candidate: string, expected: string): Promise<boo
 function toBase64Url(bytes: Uint8Array): string {
   let binary = '';
   for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+  return btoa(binary).replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=+$/g, '');
 }
 
 function fromBase64Url(value: string): Uint8Array {
@@ -85,7 +85,7 @@ async function validSession(request: Request, password: string): Promise<boolean
   if (!cookie) return false;
   const token = cookie.slice(COOKIE_NAME.length + 1);
   const [expiryText, signatureText, extra] = token.split('.');
-  if (!expiryText || !signatureText || extra !== undefined || !/^\d+$/.test(expiryText)) return false;
+  if (!expiryText || !signatureText || extra !== undefined || !/^\\d+$/.test(expiryText)) return false;
   const expiresAt = Number(expiryText);
   const now = Math.floor(Date.now() / 1000);
   if (expiresAt <= now || expiresAt > now + SESSION_SECONDS + 60) return false;
@@ -98,7 +98,7 @@ async function validSession(request: Request, password: string): Promise<boolean
 }
 
 function safeReturnPath(value: string | null, requestUrl: URL): string {
-  if (!value || !value.startsWith('/') || value.startsWith('//') || value.includes('\\')) return '/';
+  if (!value || !value.startsWith('/') || value.startsWith('//') || value.includes('\\\\')) return '/';
   try {
     const candidate = new URL(value, requestUrl.origin);
     if (candidate.origin !== requestUrl.origin || candidate.pathname === '/__site_access') return '/';
@@ -127,13 +127,10 @@ export default async function middleware(request: Request): Promise<Response | u
       const requestHost = (forwardedHost ?? request.headers.get('host') ?? url.host).split(',')[0].trim().toLowerCase();
       const forwardedProtocol = request.headers.get('x-forwarded-proto')?.split(',')[0].trim();
       const requestProtocol = forwardedProtocol ? `${forwardedProtocol.replace(/:$/, '')}:` : url.protocol;
-      const originHost = origin.host.toLowerCase();
-      const sameHost = originHost === requestHost;
+      const sameRequestOrigin = origin.protocol === requestProtocol && origin.host.toLowerCase() === requestHost;
       const groundLensHosts = new Set(['thegroundlens.com', 'www.thegroundlens.com']);
-      const sameGroundLensSite =
-        groundLensHosts.has(origin.hostname.toLowerCase()) &&
-        groundLensHosts.has(requestHost.split(':')[0]);
-      if (origin.protocol !== requestProtocol || (!sameHost && !sameGroundLensSite)) {
+      const allowedGroundLensOrigin = origin.protocol === 'https:' && groundLensHosts.has(origin.hostname.toLowerCase());
+      if (!sameRequestOrigin && !allowedGroundLensOrigin) {
         return new Response('Forbidden', { status: 403, headers: { 'Cache-Control': 'no-store' } });
       }
     }
@@ -162,4 +159,3 @@ export default async function middleware(request: Request): Promise<Response | u
   if (await validSession(request, password)) return;
   return gatePage(`${url.pathname}${url.search}`);
 }
-
