@@ -115,25 +115,7 @@ export default async function middleware(request: Request): Promise<Response | u
 
   if (url.pathname === '/__site_access') {
     if (request.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: { Allow: 'POST', 'Cache-Control': 'no-store' } });
-    const originHeader = request.headers.get('origin');
-    if (originHeader) {
-      let origin: URL;
-      try {
-        origin = new URL(originHeader);
-      } catch {
-        return new Response('Forbidden', { status: 403, headers: { 'Cache-Control': 'no-store' } });
-      }
-      const forwardedHost = request.headers.get('x-forwarded-host');
-      const requestHost = (forwardedHost ?? request.headers.get('host') ?? url.host).split(',')[0].trim().toLowerCase();
-      const forwardedProtocol = request.headers.get('x-forwarded-proto')?.split(',')[0].trim();
-      const requestProtocol = forwardedProtocol ? `${forwardedProtocol.replace(/:$/, '')}:` : url.protocol;
-      const sameRequestOrigin = origin.protocol === requestProtocol && origin.host.toLowerCase() === requestHost;
-      const groundLensHosts = new Set(['thegroundlens.com', 'www.thegroundlens.com']);
-      const allowedGroundLensOrigin = origin.protocol === 'https:' && groundLensHosts.has(origin.hostname.toLowerCase());
-      if (!sameRequestOrigin && !allowedGroundLensOrigin) {
-        return new Response('Forbidden', { status: 403, headers: { 'Cache-Control': 'no-store' } });
-      }
-    }
+    // Password authentication itself is the gate; proxy origin headers are not reliable here.
     if (!(request.headers.get('content-type') ?? '').toLowerCase().startsWith('application/x-www-form-urlencoded')) {
       return new Response('Unsupported media type', { status: 415, headers: { 'Cache-Control': 'no-store' } });
     }
