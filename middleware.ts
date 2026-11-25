@@ -64,7 +64,7 @@ async function passwordMatches(candidate: string, expected: string): Promise<boo
 function toBase64Url(bytes: Uint8Array): string {
   let binary = '';
   for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary).replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=+$/g, '');
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
 }
 
 function fromBase64Url(value: string): Uint8Array {
@@ -85,7 +85,7 @@ async function validSession(request: Request, password: string): Promise<boolean
   if (!cookie) return false;
   const token = cookie.slice(COOKIE_NAME.length + 1);
   const [expiryText, signatureText, extra] = token.split('.');
-  if (!expiryText || !signatureText || extra !== undefined || !/^\\d+$/.test(expiryText)) return false;
+  if (!expiryText || !signatureText || extra !== undefined || !/^\d+$/.test(expiryText)) return false;
   const expiresAt = Number(expiryText);
   const now = Math.floor(Date.now() / 1000);
   if (expiresAt <= now || expiresAt > now + SESSION_SECONDS + 60) return false;
@@ -98,7 +98,7 @@ async function validSession(request: Request, password: string): Promise<boolean
 }
 
 function safeReturnPath(value: string | null, requestUrl: URL): string {
-  if (!value || !value.startsWith('/') || value.startsWith('//') || value.includes('\\\\')) return '/';
+  if (!value || !value.startsWith('/') || value.startsWith('//') || value.includes('\\')) return '/';
   try {
     const candidate = new URL(value, requestUrl.origin);
     if (candidate.origin !== requestUrl.origin || candidate.pathname === '/__site_access') return '/';
